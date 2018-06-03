@@ -1,12 +1,13 @@
 const express = require('express');
 
-const competitionService = require('./competitionService');
-const dbService = require('./dbService');
-const playerService = require('./playerService');
+const competitionService = require('./services/competitionService');
+const dbService = require('./services/dbService');
+const playerService = require('./services/playerService');
 
 const server = express();
 
 server.set('port', (process.env.PORT || 5000));
+server.use(express.static('build'));
 
 server.get('/api/players', async (request, response) => {
     const playerData = await playerService.getAllPlayerData();

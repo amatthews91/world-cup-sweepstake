@@ -1,5 +1,6 @@
 const express = require('express');
 
+const competitionService = require('./competitionService');
 const dbService = require('./dbService');
 const playerService = require('./playerService');
 
@@ -10,6 +11,11 @@ server.set('port', (process.env.PORT || 5000));
 server.get('/api/players', async (request, response) => {
     const playerData = await playerService.getAllPlayerData();
     response.send(playerData);
+});
+
+server.get('/api/teams', async (request, response) => {
+    const competitionData = await competitionService.getCompetitionData();
+    response.send(competitionData);
 });
 
 server.get('/ping', (request, response) => {

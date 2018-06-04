@@ -53,6 +53,18 @@ async function getCompetitionData() {
     return teamsPopulatedWithGoalData;
 };
 
+async function getTeamNames() {
+
+    const response = await fetch(baseUrl + 'teams');
+    const responseData = await response.json();
+
+    const teamNames = responseData.teams
+      .map(team => team.name);
+
+    return teamNames;
+};
+
 module.exports = {
-    getCompetitionData
+    getCompetitionData,
+    getTeamNames
 };

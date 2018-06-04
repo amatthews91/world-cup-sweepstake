@@ -17,17 +17,24 @@ async function getAllPlayerData() {
     const playerData = await dbService.getPlayers();
     const competitionData = await competitionService.getCompetitionData();
 
-    const playersWithPoints = playerData.map(player =>  {
-        const points = getPointsForPlayer(player, competitionData);
-        return {
-            ...player,
-            points
-        };
-    });
+    const playersWithPoints = playerData
+        .map(player =>  {
+            const points = getPointsForPlayer(player, competitionData);
+            return {
+                ...player,
+                points
+            };
+        })
+        .sort((a, b) => {
+            return (a.points === b.points) ? 0 : (a.points < b.points ? 1 : -1);
+        });
 
     return playersWithPoints;
 };
 
+/**
+ * Generate 20 players with 5 randomly selected teams each and calculate the points that player would earn.
+ */
 async function generateTestPlayers() {
   const teamNames = await competitionService.getTeamNames();
 
@@ -50,13 +57,16 @@ async function generateTestPlayers() {
 
   const competitionData = await competitionService.getCompetitionData();
 
-  const playersWithPoints = players.map(player =>  {
-    const points = getPointsForPlayer(player, competitionData);
-    return {
-        ...player,
-        points
-    };
-  });
+  const playersWithPoints = players
+    .map(player =>  {
+        const points = getPointsForPlayer(player, competitionData);
+        return {
+            ...player,
+            points
+        };
+    }).sort((a, b) => {
+        return (a.points === b.points) ? 0 : (a.points < b.points ? 1 : -1);
+    });
 
   return playersWithPoints;
 

@@ -6,6 +6,10 @@ const headings = ['Name', 'Goals', 'Wins', 'Draws'];
 
 class PlayerTable extends Component {
 
+    getTotalGoals(rows) {
+        return rows.map(row => row.goals).reduce((tally, next) => tally += next);
+    }
+
     renderRow(row) {
         return (
             <tr>
@@ -20,6 +24,8 @@ class PlayerTable extends Component {
     render() {
         return (
             <div className="competition-table">
+                <h2>Competition Stats</h2>
+                <p>Total Goals: {this.getTotalGoals(this.props.rows)}</p>
                 <Table
                     headings={headings}
                     rows={this.props.rows}

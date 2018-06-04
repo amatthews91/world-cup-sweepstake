@@ -21,6 +21,7 @@ class PlayerTable extends Component {
     render() {
         return (
             <div className="player-table">
+                <h2>Players</h2>
                 <Table
                     headings={headings}
                     rows={this.props.rows}

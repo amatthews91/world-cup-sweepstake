@@ -50,14 +50,8 @@ class App extends Component {
             <p>Loading competition data...</p>
           </div>
           : <div className="tables">
-            <div className="player-table-wrapper">
-              <h2>Players</h2>
               <PlayerTable rows={this.state.playerData} />
-            </div>
-            <div className="competition-table-wrapper">
-              <h2>Competition Stats</h2>
               <CompetitionTable rows={this.state.competitionData} />
-            </div>
           </div>
         }
       </div>

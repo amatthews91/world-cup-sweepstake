@@ -8,7 +8,7 @@ const baseUrl = 'https://api.football-data.org/v1/competitions/464/';
 async function fetchWithHeader(url) {
     const API_KEY = process.env.API_KEY || fs.readFileSync('./api-key.txt');
 
-    const response = await fetch(url, { headers: { 'X-Auth-Token': '' } });
+    const response = await fetch(url, { headers: { 'X-Auth-Token': API_KEY } });
     const responseData = await response.json();
 
     return responseData;

@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
 import './App.css';
+import Table from './Table';
 
 class App extends Component {
+  renderRow(row) {
+    return (
+      <tr>
+        <td>{row.name}</td>
+        <td>{row.goals}</td>
+      </tr>
+    );
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Table
+          headings={['Name', 'Goals']}
+          rows={[{name: 'Ashley', goals: '140'}]}
+          renderRow={this.renderRow}
+        />
       </div>
     );
   }

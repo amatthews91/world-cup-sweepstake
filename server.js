@@ -14,22 +14,23 @@ server.use('/static', express.static(path.join(__dirname, 'build/static')));
 
 server.get('/api/players', async (request, response) => {
     const playerData = await playerService.getAllPlayerData();
-    response.send(playerData);
+    response.json(playerData);
 });
 
-server.get('/api/teams', async (request, response) => {
+server.get('/api/competition/teams', async (request, response) => {
     const competitionData = await competitionService.getCompetitionData();
-    response.send(competitionData);
+    response.json(competitionData);
 });
 
-server.get('/api/teams/names', async (request, response) => {
+server.get('/api/competition/teams/names', async (request, response) => {
     const teamNames = await competitionService.getTeamNames();
-    response.send(teamNames);
+    response.json(teamNames);
+});
 });
 
 server.get('/api/generate-competition', async (request, response) => {
   const generatedCompetitionData = await playerService.generateTestPlayers();
-  response.send(generatedCompetitionData);
+  response.json(generatedCompetitionData);
 });
 
 server.get('/ping', (request, response) => {

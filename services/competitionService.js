@@ -1,12 +1,21 @@
 const fetch = require('node-fetch');
+const fs = require('fs');
 
 //WC = 467
 //CL 2017/18 = 464
 const baseUrl = 'https://api.football-data.org/v1/competitions/464/';
 
-async function populateGoalData(teamData) {
-    const response = await fetch(baseUrl + 'fixtures');
+async function fetchWithHeader(url) {
+    const API_KEY = process.env.API_KEY || fs.readFileSync('./api-key.txt');
+
+    const response = await fetch(url, { headers: { 'X-Auth-Token': '' } });
     const responseData = await response.json();
+
+    return responseData;
+}
+
+async function populateGoalData(teamData) {
+    const responseData = await fetchWithHeader(baseUrl + 'fixtures');
 
     //TODO: Tidy this up, teamData doesn't actually need returning since we're just manipulating the passed in object.
     //Try to rewrite this in such a way that we create a new object and leave the original untouched (puuuuuuuuure)
@@ -32,8 +41,7 @@ async function populateGoalData(teamData) {
 
 async function getCompetitionData() {
 
-    const response = await fetch(baseUrl + 'teams');
-    const responseData = await response.json();
+    const responseData = await fetchWithHeader(baseUrl + 'teams');
 
     const teamData = {};
 
@@ -53,10 +61,21 @@ async function getCompetitionData() {
     return teamsPopulatedWithGoalData;
 };
 
+async function getTotalGoals() {
+
+  const responseData = await fetchWithHeader(baseUrl + 'fixtures');
+
+  const totalGoals = responseData.fixtures
+    .map((fixture) => { return fixture.result.goalsHomeTeam + fixture.result.goalsAwayTeam })
+    .reduce((accumulator, current) => accumulator += current);
+
+  return totalGoals;
+
+}
+
 async function getTeamNames() {
 
-    const response = await fetch(baseUrl + 'teams');
-    const responseData = await response.json();
+  const responseData = await fetchWithHeader(baseUrl + 'teams');
 
     const teamNames = responseData.teams
       .map(team => team.name);
@@ -66,5 +85,6 @@ async function getTeamNames() {
 
 module.exports = {
     getCompetitionData,
-    getTeamNames
+    getTeamNames,
+    getTotalGoals
 };

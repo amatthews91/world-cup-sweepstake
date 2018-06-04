@@ -26,6 +26,10 @@ server.get('/api/competition/teams/names', async (request, response) => {
     const teamNames = await competitionService.getTeamNames();
     response.json(teamNames);
 });
+
+server.get('/api/competition/goals', async (request, response) => {
+  const totalGoals = await competitionService.getTotalGoals();
+  response.json(totalGoals);
 });
 
 server.get('/api/generate-competition', async (request, response) => {

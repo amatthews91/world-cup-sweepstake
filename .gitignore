@@ -62,3 +62,6 @@ typings/
 
 # build files
 build/
+
+# api key file
+api-key.txt

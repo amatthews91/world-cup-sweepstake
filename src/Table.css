@@ -1,3 +1,11 @@
-table {
+table, th, td {
   border: 1px solid black;
+}
+
+table {
+  margin: auto;
+}
+
+td {
+  padding: 5px;
 }

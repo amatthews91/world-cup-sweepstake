@@ -17,22 +17,17 @@ server.get('/api/players', async (request, response) => {
     response.json(playerData);
 });
 
-server.get('/api/competition/teams', async (request, response) => {
+server.get('/api/competition', async (request, response) => {
     const competitionData = await competitionService.getCompetitionData();
     response.json(competitionData);
 });
 
-server.get('/api/competition/teams/names', async (request, response) => {
+server.get('/api/competition/teams', async (request, response) => {
     const teamNames = await competitionService.getTeamNames();
     response.json(teamNames);
 });
 
-server.get('/api/competition/goals', async (request, response) => {
-  const totalGoals = await competitionService.getTotalGoals();
-  response.json(totalGoals);
-});
-
-server.get('/api/generate-competition', async (request, response) => {
+server.get('/api/generate-players', async (request, response) => {
   const generatedCompetitionData = await playerService.generateTestPlayers();
   response.json(generatedCompetitionData);
 });

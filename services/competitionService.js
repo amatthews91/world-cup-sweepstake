@@ -61,17 +61,6 @@ async function getCompetitionData() {
     return teamsPopulatedWithGoalData;
 };
 
-async function getTotalGoals() {
-
-  const responseData = await fetchWithHeader(baseUrl + 'fixtures');
-
-  const totalGoals = responseData.fixtures
-    .map((fixture) => { return fixture.result.goalsHomeTeam + fixture.result.goalsAwayTeam })
-    .reduce((accumulator, current) => accumulator += current);
-
-  return totalGoals;
-};
-
 async function getTeamNames() {
 
   const responseData = await fetchWithHeader(baseUrl + 'teams');
@@ -84,6 +73,5 @@ async function getTeamNames() {
 
 module.exports = {
     getCompetitionData,
-    getTeamNames,
-    getTotalGoals
+    getTeamNames
 };

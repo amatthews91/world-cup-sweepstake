@@ -70,8 +70,7 @@ async function getTotalGoals() {
     .reduce((accumulator, current) => accumulator += current);
 
   return totalGoals;
-
-}
+};
 
 async function getTeamNames() {
 

@@ -4,7 +4,6 @@ Application to track the results of Scott Logic Newcastle's 2018 World Cup Sweep
 
 - [What is this?](#What-is-this?)
 - [Technical Specifications](#Technical-Specifications)
-- [TODOs/Nice To Haves](#TODOs/Nice-To-Haves)
 
 ## What is this?
 

@@ -1,11 +1,13 @@
-table, th, td {
-  border: 1px solid black;
-}
-
 table {
   margin: auto;
 }
 
+th {
+  background: #2bb3bb;
+  padding: 5px 3px;
+}
+
 td {
   padding: 5px;
+  background: #dff4f5;
 }

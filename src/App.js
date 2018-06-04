@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import './App.css';
-import Table from './Table';
+import PlayerTable from './components/PlayerTable';
+import CompetitionTable from './components/CompetitionTable';
 
 const defaultState = {
   isLoading: true,
@@ -23,23 +24,19 @@ class App extends Component {
     const competitionResponse = await fetch('/api/competition/')
     const competitionJson = await competitionResponse.json();
 
+    const competitionArray = Object.keys(competitionJson)
+      .map(key => {
+        return {
+          ...competitionJson[key],
+          name: key
+        };
+      });
+
     this.setState({
       isLoading: false,
       playerData: playerJson,
-      competitionData: competitionJson
+      competitionData: competitionArray
     });
-  }
-
-  renderRow(row) {
-    return (
-      <tr>
-        <td>{row.name}</td>
-        <td>{row.teams.goals.join(", ")}</td>
-        <td>{row.teams.outcomes.join(", ")}</td>
-        <td>{row.goalsPredicted}</td>
-        <td>{row.points}</td>
-      </tr>
-    );
   }
 
   render() {
@@ -50,13 +47,18 @@ class App extends Component {
         </header>
         { this.state.isLoading ?
           <div>
-            <p>Loading player data...</p>
+            <p>Loading competition data...</p>
           </div>
-          : <Table
-            headings={['Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points']}
-            rows={this.state.playerData}
-            renderRow={this.renderRow}
-          />
+          : <div className="tables">
+            <div className="player-table-wrapper">
+              <h2>Players</h2>
+              <PlayerTable rows={this.state.playerData} />
+            </div>
+            <div className="competition-table-wrapper">
+              <h2>Competition Stats</h2>
+              <CompetitionTable rows={this.state.competitionData} />
+            </div>
+          </div>
         }
       </div>
     );

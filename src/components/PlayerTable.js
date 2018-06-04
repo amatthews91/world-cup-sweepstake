@@ -8,7 +8,7 @@ class PlayerTable extends Component {
 
     renderRow(row) {
         return (
-            <tr>
+            <tr key={row.name}>
                 <td>{row.name}</td>
                 <td>{row.teams.goals.join(", ")}</td>
                 <td>{row.teams.outcomes.join(", ")}</td>

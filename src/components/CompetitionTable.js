@@ -12,7 +12,7 @@ class PlayerTable extends Component {
 
     renderRow(row) {
         return (
-            <tr>
+            <tr key={row.name}>
                 <td>{row.name}</td>
                 <td>{row.goals}</td>
                 <td>{row.wins}</td>

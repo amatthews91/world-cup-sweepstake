@@ -1,5 +1,8 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
+const moment = require('moment');
+
+const dbService = require('./dbService');
 
 //WC = 467
 //CL 2017/18 = 464
@@ -14,12 +17,32 @@ async function fetchWithHeader(url) {
     return responseData;
 }
 
+async function getFixtures() {
+
+    const lastApiLookup = await dbService.getLastApiLookupTime();
+    const durationSinceLastLookup = moment.duration(moment().diff(moment(lastApiLookup)));
+
+    if (parseInt(durationSinceLastLookup.asMinutes()) > 1) {
+        console.log('1 Minute has passed since last API lookup, updating fixtures.');
+
+        const fixtureResponse = await fetchWithHeader(baseUrl + 'fixtures');
+        const fixtures = fixtureResponse.fixtures;
+        dbService.updateFixtures(fixtures);
+
+        return fixtures;
+    } else {
+        console.log('Not enough time since last API call, fetching DB fixtures.');
+        const fixtures = await dbService.getFixtures();
+        return fixtures;
+    }
+}
+
 async function populateGoalData(teamData) {
-    const responseData = await fetchWithHeader(baseUrl + 'fixtures');
+    const fixtures = await getFixtures();
 
     //TODO: Tidy this up, teamData doesn't actually need returning since we're just manipulating the passed in object.
     //Try to rewrite this in such a way that we create a new object and leave the original untouched (puuuuuuuuure)
-    responseData.fixtures
+    fixtures
         .filter(fixture => fixture.status === 'FINISHED')
         .forEach(fixture => {
             const homeGoals = fixture.result.goalsHomeTeam;
@@ -36,6 +59,7 @@ async function populateGoalData(teamData) {
                 teamData[fixture.awayTeamName].draws++;
             }
         });
+
     return teamData;
 };
 

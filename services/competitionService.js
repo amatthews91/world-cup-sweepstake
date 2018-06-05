@@ -6,7 +6,7 @@ const dbService = require('./dbService');
 
 //WC = 467
 //CL 2017/18 = 464
-const baseUrl = 'https://api.football-data.org/v1/competitions/464/';
+const baseUrl = 'https://api.football-data.org/v1/competitions/467/';
 
 async function fetchWithHeader(url) {
     const API_KEY = process.env.API_KEY || fs.readFileSync('./api-key.txt');

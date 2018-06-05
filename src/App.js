@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const playerResponse = await fetch('/api/generate-players/');
+    const playerResponse = await fetch('/api/players/');
     const playerJson = await playerResponse.json();
 
     const competitionResponse = await fetch('/api/competition/')

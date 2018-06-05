@@ -8,9 +8,7 @@ const playerService = require('./services/playerService');
 const server = express();
 
 server.set('port', (process.env.PORT || 5000));
-
-server.use('/app', express.static(path.join(__dirname, 'build')));
-server.use('/static', express.static(path.join(__dirname, 'build/static')));
+server.use(express.static(path.join(__dirname, 'build')));
 
 server.get('/api/players', async (request, response) => {
     const playerData = await playerService.getAllPlayerData();
@@ -34,6 +32,10 @@ server.get('/api/generate-players', async (request, response) => {
 
 server.get('/ping', (request, response) => {
     response.send('pong');
+});
+
+server.get('*', (request, response) => {
+  response.sendFile(path.join(__dirname, '/build/index.html'));
 });
 
 async function start() {

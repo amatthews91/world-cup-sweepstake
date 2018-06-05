@@ -27,7 +27,7 @@ async function getFixtures() {
 
         const fixtureResponse = await fetchWithHeader(baseUrl + 'fixtures');
         const fixtures = fixtureResponse.fixtures;
-        dbService.updateFixtures(fixtures);
+        await dbService.updateFixtures(fixtures);
 
         return fixtures;
     } else {

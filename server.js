@@ -20,15 +20,15 @@ server.get('/api/competition', async (request, response) => {
     response.json(competitionData);
 });
 
-server.get('/api/competition/teams', async (request, response) => {
-    const teamNames = await competitionService.getTeamNames();
-    response.json(teamNames);
-});
+// server.get('/api/competition/teams', async (request, response) => {
+//     const teamNames = await competitionService.getTeamNames();
+//     response.json(teamNames);
+// });
 
-server.get('/api/generate-players', async (request, response) => {
-  const generatedCompetitionData = await playerService.generateTestPlayers();
-  response.json(generatedCompetitionData);
-});
+// server.get('/api/generate-players', async (request, response) => {
+//   const generatedCompetitionData = await playerService.generateTestPlayers();
+//   response.json(generatedCompetitionData);
+// });
 
 server.get('/ping', (request, response) => {
     response.send('pong');

@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 
 const competitionService = require('./services/competitionService');
 const dbService = require('./services/dbService');
@@ -10,7 +9,6 @@ const server = express();
 
 server.set('port', (process.env.PORT || 5000));
 server.use(express.static(path.join(__dirname, 'build')));
-server.use(favicon(path.join(__dirname, 'favicon.ico')));
 
 server.get('/api/players', async (request, response) => {
     const playerData = await playerService.getAllPlayerData();

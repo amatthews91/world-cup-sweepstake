@@ -20,9 +20,9 @@ async function fetchWithHeader(url) {
 async function getFixtures() {
 
     const lastApiLookup = await dbService.getLastApiLookupTime();
-    const durationSinceLastLookup = moment.duration(moment().diff(moment(lastApiLookup)));
+    const durationSinceLastLookup = lastApiLookup ? moment.duration(moment().diff(moment(lastApiLookup.time))) : null;
 
-    if (parseInt(durationSinceLastLookup.asMinutes()) > 1) {
+    if (!durationSinceLastLookup || parseInt(durationSinceLastLookup.asMinutes()) > 1) {
         console.log('1 Minute has passed since last API lookup, updating fixtures.');
 
         const fixtureResponse = await fetchWithHeader(baseUrl + 'fixtures');
@@ -65,16 +65,25 @@ async function populateGoalData(teamData) {
 
 async function getCompetitionData() {
 
-    const responseData = await fetchWithHeader(baseUrl + 'teams');
+    const teams = await dbService.getTeams();
+
+    if (teams.length === 0) {
+        //Store team data in DB to save on API requests - they shouldn't change during the competition.
+        console.log('No teams found in DB, updating from API');
+        const apiTeams = await fetchWithHeader(baseUrl + 'teams');
+        await dbService.updateTeams(apiTeams.teams);
+        teams.push(...apiTeams.teams);
+    }
 
     const teamData = {};
 
-    responseData.teams
+    teams
         .sort((a, b) => {
             return (a.name < b.name) ? -1 : 1;
         })
         .forEach(team => {
             teamData[team.name] = {
+                flag: team.crestUrl,
                 goals: 0,
                 wins: 0,
                 draws: 0
@@ -87,10 +96,9 @@ async function getCompetitionData() {
 
 async function getTeamNames() {
 
-  const responseData = await fetchWithHeader(baseUrl + 'teams');
+    const teams = await dbService.getTeams();
 
-    const teamNames = responseData.teams
-      .map(team => team.name);
+    const teamNames = teams.map(team => team.name);
 
     return teamNames;
 };

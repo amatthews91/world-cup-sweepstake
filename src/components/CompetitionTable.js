@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Table from './Table';
+import './CompetitionTable.css';
 
 const headings = ['Name', 'Goals', 'Wins', 'Draws'];
 
@@ -13,7 +14,7 @@ class PlayerTable extends Component {
     renderRow(row) {
         return (
             <tr key={row.name}>
-                <td>{row.name}</td>
+                <td><img className="flag" alt="Flag" src={row.flag} width="24" height="16" /> {row.name}</td>
                 <td>{row.goals}</td>
                 <td>{row.wins}</td>
                 <td>{row.draws}</td>

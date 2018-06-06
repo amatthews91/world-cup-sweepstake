@@ -11,10 +11,18 @@ async function test() {
     database.close();
 };
 
+async function getTeams() {
+    const teamCollection = await getCollection('teams');
+    const teams = await teamCollection.find({}).toArray();
+
+    return teams;
+};
+
 async function getPlayers()  {
     const playerCollection = await getCollection('players');
-    const result = await playerCollection.find({}).toArray();
-    return result;
+    const players = await playerCollection.find({}).toArray();
+
+    return players;
 };
 
 async function getFixtures() {
@@ -23,6 +31,13 @@ async function getFixtures() {
 
     return fixtures;
 };
+
+async function updateTeams(teams) {
+    const teamCollection = await getCollection('teams');
+    //Just in case
+    await teamCollection.remove();
+    await teamCollection.insert(teams);
+}
 
 async function updateFixtures(data) {
     const fixtureCollection = await getCollection('fixtures');
@@ -38,7 +53,7 @@ async function getLastApiLookupTime() {
     const lookupCollection = await getCollection('last-api-lookup');
     const lastLookup = await lookupCollection.findOne({});
 
-    return lastLookup.time;
+    return lastLookup;
 }
 
 async function getCollection(collectionName) {
@@ -54,8 +69,10 @@ async function getCollection(collectionName) {
 
 module.exports = {
     test,
+    getTeams,
     getPlayers,
     getFixtures,
     getLastApiLookupTime,
-    updateFixtures
+    updateFixtures,
+    updateTeams
 };

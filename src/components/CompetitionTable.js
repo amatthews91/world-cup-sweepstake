@@ -8,7 +8,7 @@ const headings = ['Name', 'Goals', 'Wins', 'Draws'];
 class PlayerTable extends Component {
 
     getTotalGoals(rows) {
-        return rows.map(row => row.goals).reduce((tally, next) => tally += next);
+        return rows.map(row => row.goals).reduce((tally, next) => tally + next);
     }
 
     renderRow(row) {

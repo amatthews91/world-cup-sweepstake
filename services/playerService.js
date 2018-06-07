@@ -13,9 +13,16 @@ const getPointsForPlayer = (player, competitionData) => {
     return points;
 };
 
+const getTotalGoals = competitionData => {
+    return Object.keys(competitionData)
+        .map(key => competitionData[key].goals)
+        .reduce((tally, next) => tally + next)
+};
+
 async function getAllPlayerData() {
     const playerData = await dbService.getPlayers();
     const competitionData = await competitionService.getCompetitionData();
+    const totalGoals = getTotalGoals(competitionData);
 
     const playersWithPoints = playerData
         .map(player =>  {
@@ -26,7 +33,16 @@ async function getAllPlayerData() {
             };
         })
         .sort((a, b) => {
-            return (a.points === b.points) ? 0 : (a.points < b.points ? 1 : -1);
+            if (a.points < b.points) return 1;
+            if (a.points > b.points) return -1;
+
+            const aDistanceToTotalGoals = Math.abs(totalGoals - a.goalsPredicted);
+            const bDistanceToTotalGoals = Math.abs(totalGoals - b.goalsPredicted);
+
+            if (aDistanceToTotalGoals > bDistanceToTotalGoals) return 1;
+            if (bDistanceToTotalGoals < bDistanceToTotalGoals) return -1;
+
+            return 0;
         });
 
     return playersWithPoints;
@@ -51,11 +67,13 @@ async function generateTestPlayers() {
       teams: {
         goals: [ teamNames[randoms[0]], teamNames[randoms[1]] ],
         outcomes: [ teamNames[randoms[2]], teamNames[randoms[3]], teamNames[randoms[4]] ]
-      }
+      },
+      goalsPredicted: getRandomInt(500)
     });
   }
 
   const competitionData = await competitionService.getCompetitionData();
+  const totalGoals = await getTotalGoals(competitionData);
 
   const playersWithPoints = players
     .map(player =>  {
@@ -65,7 +83,16 @@ async function generateTestPlayers() {
             points
         };
     }).sort((a, b) => {
-        return (a.points === b.points) ? 0 : (a.points < b.points ? 1 : -1);
+        if (a.points < b.points) return 1;
+        if (a.points > b.points) return -1;
+
+        const aDistanceToTotalGoals = Math.abs(totalGoals - a.goalsPredicted);
+        const bDistanceToTotalGoals = Math.abs(totalGoals - b.goalsPredicted);
+
+        if (aDistanceToTotalGoals > bDistanceToTotalGoals) return 1;
+        if (aDistanceToTotalGoals < bDistanceToTotalGoals) return -1;
+
+        return 0;
     });
 
   return playersWithPoints;

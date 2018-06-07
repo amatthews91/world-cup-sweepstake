@@ -40,7 +40,7 @@ async function getAllPlayerData() {
             const bDistanceToTotalGoals = Math.abs(totalGoals - b.goalsPredicted);
 
             if (aDistanceToTotalGoals > bDistanceToTotalGoals) return 1;
-            if (bDistanceToTotalGoals < bDistanceToTotalGoals) return -1;
+            if (aDistanceToTotalGoals < bDistanceToTotalGoals) return -1;
 
             return 0;
         });

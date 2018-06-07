@@ -42,8 +42,8 @@ class App extends Component {
     getPrizePool(players) {
         const totalCash = players.length * 3;
         return {
-            first: totalCash * 0.85,
-            last: totalCash * 0.15
+            first: (totalCash * 0.85).toPrecision(2),
+            last: (totalCash * 0.15).toPrecision(2)
         };
     };
 

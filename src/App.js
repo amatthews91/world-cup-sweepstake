@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const playerResponse = await fetch('/api/players/');
+    const playerResponse = await fetch('/api/generate-players/');
     const playerJson = await playerResponse.json();
 
     const competitionResponse = await fetch('/api/competition/')
@@ -39,7 +39,16 @@ class App extends Component {
     });
   }
 
+    getPrizePool(players) {
+        const totalCash = players.length * 3;
+        return {
+            first: totalCash * 0.85,
+            last: totalCash * 0.15
+        };
+    };
+
   render() {
+    const prizePool = this.getPrizePool(this.state.playerData);
     return (
       <div className="App">
         <header className="App-header">
@@ -49,9 +58,16 @@ class App extends Component {
           <div>
             <p>Loading competition data...</p>
           </div>
-          : <div className="tables">
-              <PlayerTable rows={this.state.playerData} />
-              <CompetitionTable rows={this.state.competitionData} />
+          :
+          <div className="content">
+            <div className="prize-pool">
+                <h2>Current Prize Pool</h2>
+                <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
+            </div>
+            <div className="tables">
+                <PlayerTable rows={this.state.playerData} />
+                <CompetitionTable rows={this.state.competitionData} />
+            </div>
           </div>
         }
       </div>

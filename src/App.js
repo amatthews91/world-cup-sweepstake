@@ -6,6 +6,7 @@ import CompetitionTable from './components/CompetitionTable';
 
 const defaultState = {
   isLoading: true,
+  isLiveData: false,
   playerData: [],
   competitionData: {}
 };
@@ -15,13 +16,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = defaultState;
+
+    this.toggleLiveData = this.toggleLiveData.bind(this);
   }
 
-  async componentDidMount() {
-    const playerResponse = await fetch('/api/players/');
+  componentDidMount() {
+    this.loadData(false);
+  }
+
+  async loadData(isLiveData) {
+    this.setState({
+      ...this.state,
+      isLoading: true
+    });
+
+    const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
 
-    const competitionResponse = await fetch('/api/competition/')
+    const competitionResponse = await fetch(`/api/competition?live=${isLiveData}`)
     const competitionJson = await competitionResponse.json();
 
     const competitionArray = Object.keys(competitionJson)
@@ -34,18 +46,23 @@ class App extends Component {
 
     this.setState({
       isLoading: false,
+      isLiveData: isLiveData,
       playerData: playerJson,
       competitionData: competitionArray
     });
-  }
+  };
 
-    getPrizePool(players) {
-        const totalCash = players.length * 3;
-        return {
-            first: (totalCash * 0.85).toFixed(2),
-            last: (totalCash * 0.15).toFixed(2)
-        };
-    };
+  getPrizePool(players) {
+      const totalCash = players.length * 3;
+      return {
+          first: (totalCash * 0.85).toFixed(2),
+          last: (totalCash * 0.15).toFixed(2)
+      };
+  };
+
+  toggleLiveData() {
+    this.state.isLiveData ? this.loadData(false) : this.loadData(true);
+  };
 
   render() {
     const prizePool = this.getPrizePool(this.state.playerData);
@@ -60,6 +77,14 @@ class App extends Component {
           </div>
           :
           <div className="content">
+            <div className="live-data-checkbox">
+              <input
+                type="checkbox"
+                checked={this.state.isLiveData}
+                onChange={this.toggleLiveData}
+              />
+              Use live data?
+            </div>
             <div className="prize-pool">
                 <h2>Current Prize Pool</h2>
                 <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const boolParser = require('express-query-boolean');
 
 const competitionService = require('./services/competitionService');
 const dbService = require('./services/dbService');
@@ -8,6 +9,7 @@ const playerService = require('./services/playerService');
 const server = express();
 
 server.set('port', (process.env.PORT || 5000));
+server.use(boolParser());
 server.use(express.static(path.join(__dirname, 'build')));
 
 server.get('/api/players', async (request, response) => {

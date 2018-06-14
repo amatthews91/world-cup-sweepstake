@@ -43,7 +43,7 @@ async function populateGoalData(teamData, isLiveRequest) {
     //TODO: Tidy this up, teamData doesn't actually need returning since we're just manipulating the passed in object.
     //Try to rewrite this in such a way that we create a new object and leave the original untouched (puuuuuuuuure)
     fixtures
-        .filter(fixture => isLiveRequest === true ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
+        .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
         .forEach(fixture => {
             const homeGoals = fixture.result.goalsHomeTeam;
             const awayGoals = fixture.result.goalsAwayTeam;

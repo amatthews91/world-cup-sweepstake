@@ -11,12 +11,14 @@ server.set('port', (process.env.PORT || 5000));
 server.use(express.static(path.join(__dirname, 'build')));
 
 server.get('/api/players', async (request, response) => {
-    const playerData = await playerService.getAllPlayerData();
+    const isLiveRequest = request.query.live;
+    const playerData = await playerService.getAllPlayerData(isLiveRequest);
     response.json(playerData);
 });
 
 server.get('/api/competition', async (request, response) => {
-    const competitionData = await competitionService.getCompetitionData();
+    const isLiveRequest = request.query.live;
+    const competitionData = await competitionService.getCompetitionData(isLiveRequest);
     response.json(competitionData);
 });
 

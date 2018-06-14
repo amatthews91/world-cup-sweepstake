@@ -19,9 +19,9 @@ const getTotalGoals = competitionData => {
         .reduce((tally, next) => tally + next)
 };
 
-async function getAllPlayerData() {
+async function getAllPlayerData(isLiveRequest) {
     const playerData = await dbService.getPlayers();
-    const competitionData = await competitionService.getCompetitionData();
+    const competitionData = await competitionService.getCompetitionData(isLiveRequest);
     const totalGoals = getTotalGoals(competitionData);
 
     const playersWithPoints = playerData

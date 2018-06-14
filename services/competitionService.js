@@ -37,13 +37,13 @@ async function getFixtures() {
     }
 }
 
-async function populateGoalData(teamData) {
+async function populateGoalData(teamData, isLiveRequest) {
     const fixtures = await getFixtures();
 
     //TODO: Tidy this up, teamData doesn't actually need returning since we're just manipulating the passed in object.
     //Try to rewrite this in such a way that we create a new object and leave the original untouched (puuuuuuuuure)
     fixtures
-        .filter(fixture => fixture.status === 'FINISHED')
+        .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
         .forEach(fixture => {
             const homeGoals = fixture.result.goalsHomeTeam;
             const awayGoals = fixture.result.goalsAwayTeam;
@@ -63,7 +63,7 @@ async function populateGoalData(teamData) {
     return teamData;
 };
 
-async function getCompetitionData() {
+async function getCompetitionData(isLiveRequest) {
 
     const teams = await dbService.getTeams();
 
@@ -90,7 +90,7 @@ async function getCompetitionData() {
             };
         });
 
-    const teamsPopulatedWithGoalData = await populateGoalData(teamData);
+    const teamsPopulatedWithGoalData = await populateGoalData(teamData, isLiveRequest);
     return teamsPopulatedWithGoalData;
 };
 

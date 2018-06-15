@@ -5,7 +5,7 @@ import './CompetitionTable.css';
 
 const headings = ['Name', 'Goals', 'Wins', 'Draws'];
 
-class PlayerTable extends Component {
+class CompetitionTable extends Component {
 
     getTotalGoals(rows) {
         return rows.map(row => row.goals).reduce((tally, next) => tally + next);
@@ -37,4 +37,4 @@ class PlayerTable extends Component {
     }
 }
 
-export default PlayerTable;
+export default CompetitionTable;

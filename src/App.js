@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
-import './App.css';
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
+
+import RefreshIcon from './images/RefreshIcon.svg';
+import './App.css';
 
 const defaultState = {
   isLoading: true,
@@ -18,6 +20,7 @@ class App extends Component {
     this.state = defaultState;
 
     this.toggleLiveData = this.toggleLiveData.bind(this);
+    this.reloadData = this.reloadData.bind(this);
   }
 
   componentDidMount() {
@@ -27,7 +30,8 @@ class App extends Component {
   async loadData(isLiveData) {
     this.setState({
       ...this.state,
-      isLoading: true
+      isLoading: true,
+      isLiveData
     });
 
     const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
@@ -46,7 +50,6 @@ class App extends Component {
 
     this.setState({
       isLoading: false,
-      isLiveData: isLiveData,
       playerData: playerJson,
       competitionData: competitionArray
     });
@@ -64,6 +67,12 @@ class App extends Component {
     this.state.isLiveData ? this.loadData(false) : this.loadData(true);
   };
 
+  reloadData() {
+      if (!this.state.isLoading) {
+          this.loadData(this.state.isLiveData);
+      }
+  }
+
   render() {
     const prizePool = this.getPrizePool(this.state.playerData);
     return (
@@ -71,31 +80,38 @@ class App extends Component {
         <header className="App-header">
           <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
         </header>
+        <div className="data-options">
+            <div className="live-data-checkbox"
+                title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
+                <input
+                    type="checkbox"
+                    disabled={this.state.isLoading}
+                    checked={this.state.isLiveData}
+                    onChange={this.toggleLiveData}
+                />
+                Use live data?
+            </div>
+            <div className="refresh-data" onClick={this.reloadData}>
+                <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
+                Refresh data
+            </div>
+        </div>
         { this.state.isLoading ?
-          <div>
-            <p>Loading competition data...</p>
-          </div>
-          :
-          <div className="content">
-            <div className="live-data-checkbox">
-              <input
-                type="checkbox"
-                checked={this.state.isLiveData}
-                onChange={this.toggleLiveData}
-              />
-              Use live data?
+            <div className="loading">
+                <p>Loading competition data...</p>
             </div>
-            <div className="prize-pool">
-                <h2>Current Prize Pool</h2>
-                <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
+            : <div className="content">
+                <div className="prize-pool">
+                    <h2>Current Prize Pool</h2>
+                    <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
+                </div>
+                <div className="tables">
+                    <PlayerTable rows={this.state.playerData} />
+                    <CompetitionTable rows={this.state.competitionData} />
+                </div>
             </div>
-            <div className="tables">
-                <PlayerTable rows={this.state.playerData} />
-                <CompetitionTable rows={this.state.competitionData} />
-            </div>
-          </div>
         }
-      </div>
+        </div>
     );
   }
 }

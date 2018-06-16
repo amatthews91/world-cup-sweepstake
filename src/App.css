@@ -31,3 +31,13 @@
 .refresh-data:hover {
     cursor: pointer;
 }
+
+@media (max-width: 500px) {
+  .data-options {
+    width: 100%;
+  }
+
+  .tables {
+    display: inline;
+  }
+}

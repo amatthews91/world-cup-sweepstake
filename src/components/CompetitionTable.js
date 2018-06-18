@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Table from './Table';
 import './CompetitionTable.css';
 
-const headings = ['Name', 'Goals', 'Wins', 'Draws'];
+const headings = ['Name', 'Goals', 'Wins', 'Draws', 'Losses'];
 
 class CompetitionTable extends Component {
 
@@ -18,6 +18,7 @@ class CompetitionTable extends Component {
                 <td>{row.goals}</td>
                 <td>{row.wins}</td>
                 <td>{row.draws}</td>
+                <td>{row.losses}</td>
             </tr>
         );
     }

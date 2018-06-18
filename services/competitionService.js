@@ -51,8 +51,10 @@ async function populateGoalData(teamData, isLiveRequest) {
 
             if (homeGoals > awayGoals) {
                 teamData[fixture.homeTeamName].wins++;
+                teamData[fixture.awayTeamName].losses++;
             } else if (awayGoals > homeGoals) {
                 teamData[fixture.awayTeamName].wins++;
+                teamData[fixture.homeTeamName].losses++;
             } else {
                 teamData[fixture.homeTeamName].draws++;
                 teamData[fixture.awayTeamName].draws++;
@@ -85,7 +87,8 @@ async function getCompetitionData(isLiveRequest) {
                 flag: team.crestUrl,
                 goals: 0,
                 wins: 0,
-                draws: 0
+                draws: 0,
+                losses: 0
             };
         });
 

@@ -72,8 +72,14 @@ async function getCompetitionData(isLiveRequest) {
         //Store team data in DB to save on API requests - they shouldn't change during the competition.
         console.log('No teams found in DB, updating from API');
         const apiTeams = await fetchWithHeader(baseUrl + 'teams');
-        await dbService.updateTeams(apiTeams.teams);
-        teams.push(...apiTeams.teams);
+        const teamsWithEliminatedStatus = apiTeams.teams.map(team => {
+            return {
+                isEliminated: false,
+                ...team
+            }
+        });
+        await dbService.updateTeams(teamsWithEliminatedStatus);
+        teams.push(...teamsWithEliminatedStatus);
     }
 
     const teamData = {};
@@ -85,6 +91,7 @@ async function getCompetitionData(isLiveRequest) {
         .forEach(team => {
             teamData[team.name] = {
                 flag: team.crestUrl,
+                isEliminated: team.isEliminated,
                 goals: 0,
                 wins: 0,
                 draws: 0,

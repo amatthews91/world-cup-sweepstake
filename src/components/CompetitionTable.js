@@ -13,7 +13,7 @@ class CompetitionTable extends Component {
 
     renderRow(row) {
         return (
-            <tr key={row.name}>
+            <tr key={row.name} className={row.isEliminated ? 'team-eliminated' : ''}>
                 <td><img className="flag" alt="Flag" src={row.flag} width="24" height="16" /> {row.name}</td>
                 <td>{row.goals}</td>
                 <td>{row.wins}</td>

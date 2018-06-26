@@ -81,7 +81,7 @@ class App extends Component {
           <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
         </header>
         <div className="data-options">
-            <div className="live-data-checkbox"
+            <label className="live-data-checkbox"
                 title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
                 <input
                     type="checkbox"
@@ -90,7 +90,7 @@ class App extends Component {
                     onChange={this.toggleLiveData}
                 />
                 Use live data?
-            </div>
+            </label>
             <div className="refresh-data" onClick={this.reloadData}>
                 <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
                 Refresh data

@@ -55,6 +55,17 @@ async function populateGoalData(teamData, isLiveRequest) {
             } else if (awayGoals > homeGoals) {
                 teamData[fixture.awayTeamName].wins++;
                 teamData[fixture.homeTeamName].losses++;
+            } else if (fixture.result.penaltyShootout) {
+                const homePenaltyGoals = fixture.result.penaltyShootout.goalsHomeTeam;
+                const awayPenaltyGoals = fixture.result.penaltyShootout.goalsAwayTeam;
+
+                if (homePenaltyGoals > awayPenaltyGoals) {
+                    teamData[fixture.homeTeamName].wins++;
+                    teamData[fixture.awayTeamName].losses++;
+                } else {
+                    teamData[fixture.awayTeamName].wins++;
+                    teamData[fixture.homeTeamName].losses++;
+                }
             } else {
                 teamData[fixture.homeTeamName].draws++;
                 teamData[fixture.awayTeamName].draws++;

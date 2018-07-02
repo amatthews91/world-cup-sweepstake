@@ -11,7 +11,7 @@ class PlayerTable extends Component {
                 <tbody>
                     <tr>
                         {teams.map(team => (
-                            <td>
+                            <td key={team.name}>
                                 {this.props.teams[team].isEliminated ? <s>{team}</s> : team}
                             </td>
                         ))}

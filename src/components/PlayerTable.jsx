@@ -5,13 +5,28 @@ import Table from './Table';
 const headings = ['Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points'];
 
 class PlayerTable extends Component {
+    renderTeams(teams) {
+        return (
+            <table>
+                <tbody>
+                    <tr>
+                        {teams.map(team => (
+                            <td>
+                                {this.props.teams[team].isEliminated ? <s>{team}</s> : team}
+                            </td>
+                        ))}
+                    </tr>
+                </tbody>
+            </table>
+        )
+    }
 
     renderRow(row) {
         return (
             <tr key={row.name}>
                 <td>{row.name}</td>
-                <td>{row.teams.goals.join(", ")}</td>
-                <td>{row.teams.outcomes.join(", ")}</td>
+                <td>{this.renderTeams(row.teams.goals)}</td>
+                <td>{this.renderTeams(row.teams.outcomes)}</td>
                 <td>{row.goalsPredicted}</td>
                 <td>{row.points}</td>
             </tr>

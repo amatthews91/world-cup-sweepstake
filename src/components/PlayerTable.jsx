@@ -5,7 +5,7 @@ import Table from './Table';
 const headings = ['Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points'];
 
 class PlayerTable extends Component {
-    renderTeams = (teams) => {
+    renderTeams(teams) {
         return (
             <table>
                 <tbody>
@@ -21,7 +21,7 @@ class PlayerTable extends Component {
         )
     }
 
-    renderRow(row) {
+    renderRow = (row) => {
         return (
             <tr key={row.name}>
                 <td>{row.name}</td>

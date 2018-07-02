@@ -6,19 +6,9 @@ const headings = ['Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals'
 
 class PlayerTable extends Component {
     renderTeams(teams) {
-        return (
-            <table>
-                <tbody>
-                    <tr>
-                        {teams.map(team => (
-                            <td key={team.name}>
-                                {this.props.teams[team].isEliminated ? <s>{team}</s> : team}
-                            </td>
-                        ))}
-                    </tr>
-                </tbody>
-            </table>
-        )
+        return teams.map(team => (
+            this.props.teams[team].isEliminated ? <s>{team}</s> : team
+        )).reduce((prev, curr) => [prev, ', ', curr])
     }
 
     renderRow = (row) => {

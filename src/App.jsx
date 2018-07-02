@@ -51,16 +51,17 @@ class App extends Component {
     this.setState({
       isLoading: false,
       playerData: playerJson,
-      competitionData: competitionArray
+      competitionData: competitionArray,
+      teams: competitionJson,
     });
   };
 
   getPrizePool(players) {
-      const totalCash = players.length * 3;
-      return {
-          first: (totalCash * 0.85).toFixed(2),
-          last: (totalCash * 0.15).toFixed(2)
-      };
+    const totalCash = players.length * 3;
+    return {
+      first: (totalCash * 0.85).toFixed(2),
+      last: (totalCash * 0.15).toFixed(2)
+    };
   };
 
   toggleLiveData() {
@@ -68,9 +69,9 @@ class App extends Component {
   };
 
   reloadData() {
-      if (!this.state.isLoading) {
-          this.loadData(this.state.isLiveData);
-      }
+    if (!this.state.isLoading) {
+      this.loadData(this.state.isLiveData);
+    }
   }
 
   render() {
@@ -81,37 +82,40 @@ class App extends Component {
           <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
         </header>
         <div className="data-options">
-            <label className="live-data-checkbox"
-                title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
-                <input
-                    type="checkbox"
-                    disabled={this.state.isLoading}
-                    checked={this.state.isLiveData}
-                    onChange={this.toggleLiveData}
-                />
-                Use live data?
+          <label className="live-data-checkbox"
+            title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
+            <input
+              type="checkbox"
+              disabled={this.state.isLoading}
+              checked={this.state.isLiveData}
+              onChange={this.toggleLiveData}
+            />
+            Use live data?
             </label>
-            <div className="refresh-data" onClick={this.reloadData}>
-                <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
-                Refresh data
+          <div className="refresh-data" onClick={this.reloadData}>
+            <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
+            Refresh data
             </div>
         </div>
-        { this.state.isLoading ?
-            <div className="loading">
-                <p>Loading competition data...</p>
+        {this.state.isLoading ?
+          <div className="loading">
+            <p>Loading competition data...</p>
+          </div>
+          : <div className="content">
+            <div className="prize-pool">
+              <h2>Current Prize Pool</h2>
+              <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
             </div>
-            : <div className="content">
-                <div className="prize-pool">
-                    <h2>Current Prize Pool</h2>
-                    <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
-                </div>
-                <div className="tables">
-                    <PlayerTable rows={this.state.playerData} />
-                    <CompetitionTable rows={this.state.competitionData} />
-                </div>
+            <div className="tables">
+              <PlayerTable
+                rows={this.state.playerData}
+                teams={this.state.teams}
+              />
+              <CompetitionTable rows={this.state.competitionData} />
             </div>
+          </div>
         }
-        </div>
+      </div>
     );
   }
 }

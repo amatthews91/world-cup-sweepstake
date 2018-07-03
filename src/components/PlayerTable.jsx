@@ -16,9 +16,7 @@ class PlayerTable extends Component {
     }
 
     areAllPlayerTeamsEliminated({ goals, outcomes }) {
-        const areAllTeamsEliminated = teams => teams.every(this.isTeamEliminated)
-
-        return areAllTeamsEliminated(goals) && areAllTeamsEliminated(outcomes)
+        return goals.every(this.isTeamEliminated) && outcomes.every(this.isTeamEliminated);
     }
 
     renderRow = (row) => {

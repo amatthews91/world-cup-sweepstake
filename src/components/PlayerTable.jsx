@@ -5,15 +5,28 @@ import Table from './Table';
 const headings = ['Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points'];
 
 class PlayerTable extends Component {
+    isTeamEliminated = (team) => {
+        return this.props.teams[team].isEliminated;
+    }
+
     renderTeams(teams) {
         return teams.map(team => (
-            this.props.teams[team].isEliminated ? <s>{team}</s> : team
+            this.isTeamEliminated(team) ? <s>{team}</s> : team
         )).reduce((prev, curr) => [prev, ', ', curr])
     }
 
+    areAllPlayerTeamsEliminated({ goals, outcomes }) {
+        return goals.every(this.isTeamEliminated) && outcomes.every(this.isTeamEliminated);
+    }
+
     renderRow = (row) => {
+        const className = this.areAllPlayerTeamsEliminated(row.teams) ? 'team-eliminated' : ''
+
         return (
-            <tr key={row.name}>
+            <tr
+                key={row.name}
+                className={className}
+            >
                 <td>{row.name}</td>
                 <td>{this.renderTeams(row.teams.goals)}</td>
                 <td>{this.renderTeams(row.teams.outcomes)}</td>

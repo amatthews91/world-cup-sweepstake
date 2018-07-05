@@ -30,3 +30,7 @@
   grid-template-columns: 1fr 50px 1fr;
   grid-gap: 10px;
 }
+
+.match-goals-home {
+  margin-right: 5px;
+}

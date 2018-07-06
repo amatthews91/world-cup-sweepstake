@@ -41,6 +41,10 @@
   .tables {
     display: inline;
   }
+
+  .upcoming-matches {
+    width: 100%;
+  }
 }
 
 s {

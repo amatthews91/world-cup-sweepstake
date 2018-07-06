@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
+import UpcomingMatches from './components/UpcomingMatches';
 
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
@@ -37,8 +38,11 @@ class App extends Component {
     const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
 
-    const competitionResponse = await fetch(`/api/competition?live=${isLiveData}`)
+    const competitionResponse = await fetch(`/api/competition?live=${isLiveData}`);
     const competitionJson = await competitionResponse.json();
+
+    const fixtureResponse = await fetch('/api/competition/today');
+    const fixtureJson = await fixtureResponse.json();
 
     const competitionArray = Object.keys(competitionJson)
       .map(key => {
@@ -53,6 +57,7 @@ class App extends Component {
       playerData: playerJson,
       competitionData: competitionArray,
       teams: competitionJson,
+      fixtures: fixtureJson
     });
   };
 
@@ -100,12 +105,13 @@ class App extends Component {
         {this.state.isLoading ?
           <div className="loading">
             <p>Loading competition data...</p>
-          </div>
-          : <div className="content">
+          </div> :
+          <div className="content">
             <div className="prize-pool">
               <h2>Current Prize Pool</h2>
               <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
             </div>
+            <UpcomingMatches matches={this.state.fixtures} />
             <div className="tables">
               <PlayerTable
                 rows={this.state.playerData}

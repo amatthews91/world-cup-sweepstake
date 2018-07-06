@@ -28,10 +28,10 @@ class UpcomingMatches extends Component {
           { match.status === 'IN_PLAY' || match.status === 'FINISHED' ?
             <div className="match-score">
               <div className="match-goals match-goals-home">
-                {match.result.homeTeamGoals}
+                {match.result.goalsHomeTeam}
               </div>
               <div className="match-goals match-goals-away">
-                {match.result.awayTeamGoals}
+                {match.result.goalsAwayTeam}
               </div>
             </div> :
             <div className="match-time">{this.getMatchTime(match.date)}</div>

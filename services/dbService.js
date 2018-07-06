@@ -1,5 +1,4 @@
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 const moment = require('moment');
 
 const dbName = process.env.MONGODB_NAME || 'world-cup-sweepstake';

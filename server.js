@@ -13,15 +13,20 @@ server.use(boolParser());
 server.use(express.static(path.join(__dirname, 'build')));
 
 server.get('/api/players', async (request, response) => {
-    const isLiveRequest = request.query.live;
-    const playerData = await playerService.getAllPlayerData(isLiveRequest);
-    response.json(playerData);
+  const isLiveRequest = request.query.live;
+  const playerData = await playerService.getAllPlayerData(isLiveRequest);
+  response.json(playerData);
 });
 
 server.get('/api/competition', async (request, response) => {
-    const isLiveRequest = request.query.live;
-    const competitionData = await competitionService.getCompetitionData(isLiveRequest);
-    response.json(competitionData);
+  const isLiveRequest = request.query.live;
+  const competitionData = await competitionService.getCompetitionData(isLiveRequest);
+  response.json(competitionData);
+});
+
+server.get('/api/competition/today', async (request, response) => {
+  const todaysFixtures = await competitionService.getFixturesForToday();
+  response.json(todaysFixtures);
 });
 
 // server.get('/api/competition/teams', async (request, response) => {
@@ -35,7 +40,7 @@ server.get('/api/competition', async (request, response) => {
 // });
 
 server.get('/ping', (request, response) => {
-    response.send('pong');
+  response.send('pong');
 });
 
 server.get('*', (request, response) => {
@@ -43,10 +48,10 @@ server.get('*', (request, response) => {
 });
 
 async function start() {
-    await dbService.test();
-    server.listen(server.get('port'), () => {
-        console.log(`Server listening on port ${server.get('port')}`);
-    });
+  await dbService.test();
+  server.listen(server.get('port'), () => {
+    console.log(`Server listening on port ${server.get('port')}`);
+  });
 };
 
 start();

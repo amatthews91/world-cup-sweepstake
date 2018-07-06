@@ -123,7 +123,15 @@ async function getTeamNames() {
     return teamNames;
 };
 
+async function getFixturesForToday() {
+
+  const fixtures = await getFixtures();
+  return fixtures.filter(fixture => moment(fixture.date).isSame(moment(), 'day'));
+
+}
+
 module.exports = {
     getCompetitionData,
-    getTeamNames
+    getTeamNames,
+    getFixturesForToday
 };

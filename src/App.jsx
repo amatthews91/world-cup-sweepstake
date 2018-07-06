@@ -95,7 +95,7 @@ class App extends Component {
               checked={this.state.isLiveData}
               onChange={this.toggleLiveData}
             />
-            Use live data?
+            Use live data for tables?
             </label>
           <div className="refresh-data" onClick={this.reloadData}>
             <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />

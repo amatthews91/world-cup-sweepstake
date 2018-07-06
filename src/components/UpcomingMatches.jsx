@@ -22,7 +22,7 @@ class UpcomingMatches extends Component {
 
   renderRow(match) {
     return(
-      <div className="match-row">
+      <div key={`${match.homeTeamName}-${match.awayTeamName}`} className="match-row">
         <div className='match-result'>
           <div className="match-team match-team-home">{match.homeTeamName}</div>
           { match.status === 'IN_PLAY' || match.status === 'FINISHED' ?

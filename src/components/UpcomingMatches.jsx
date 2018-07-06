@@ -12,7 +12,7 @@ class UpcomingMatches extends Component {
   getMatchStatus(match) {
     switch (match.status) {
       case 'IN_PLAY':
-        return <span>Live</span>;
+        return <span className="status-live">Live</span>;
       case 'FINISHED':
         return <span>FT</span>;
       default:

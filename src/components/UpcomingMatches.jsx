@@ -47,9 +47,12 @@ class UpcomingMatches extends Component {
     return (
       <div className="upcoming-matches">
         <h2>Today's Matches</h2>
-        <div className="match-info">
-          { this.props.matches.map(match => this.renderRow(match)) }
-        </div>
+        { this.props.matches.length === 0 ?
+          <div>No matches scheduled for today</div> :
+          <div className="match-info">
+            { this.props.matches.map(match => this.renderRow(match)) }
+          </div>
+        }
       </div>
     );
   }

@@ -44,8 +44,8 @@ async function populateGoalData(teamData, isLiveRequest) {
     fixtures
         .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
         .forEach(fixture => {
-            const homeGoals = fixture.result.goalsHomeTeam;
-            const awayGoals = fixture.result.goalsAwayTeam;
+            const homeGoals = fixture.result.extraTime ?  fixture.result.extraTime.goalsHomeTeam : fixture.result.goalsHomeTeam;
+            const awayGoals = fixture.result.extraTime ?  fixture.result.extraTime.goalsAwayTeam : fixture.result.goalsAwayTeam;
             teamData[fixture.homeTeamName].goals += homeGoals;
             teamData[fixture.awayTeamName].goals += awayGoals;
 

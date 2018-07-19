@@ -13,6 +13,7 @@ const DATABASE = {
   'COLLECTIONS': {
     'FIXTURES': 'fixtures',
     'LAST_API_LOOKUP': 'last-api-lookup',
+    'PARTICIPANTS': 'participants',
     'TEAMS': 'teams'
   },
   'URL': process.env.MONGODB_URI || `mongodb://localhost:27017/`,

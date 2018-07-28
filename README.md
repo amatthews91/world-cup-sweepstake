@@ -8,14 +8,14 @@ Application to track the results of Scott Logic Newcastle's 2018 World Cup Sweep
 ## What is this?
 
 This is a sweepstake competition which will run alongside the 2018 FIFA World Cup, but with a twist:
-Participants will draw 5 teams from a hat, the first 2 teams will be the "goal" teams, the subsequent 3 teams will be the "outcome" teams. The team names will then be returned to the hat for the next participant. They will also be asked to predict the total goals that will be scored over the competition.
+Players will draw 5 teams from a hat, the first 2 teams will be the "goal" teams, the subsequent 3 teams will be the "outcome" teams. The team names will then be returned to the hat for the next player. They will also be asked to predict the total goals that will be scored over the competition.
 
 During the competition points are rewarded as follows:
  * 1 Point for every goal scored by a "goal" team.
  * 3 Points for every win achieved by an "outcome" team.
  * 1 Point for every draw achieved by an "outcome" team.
 
-At the end of the competition the participant with the most points will claim the top prize. In the even of a tie, it will come down to whichever participant
+At the end of the competition the player with the most points will claim the top prize. In the even of a tie, it will come down to whichever player
 
 During the competition this application will display the teams picked by each player, along with the total goals they predicted and their current points tally. It will also display the total goals, wins and draws for each team along with the actual current total goals.
 

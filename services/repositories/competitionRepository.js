@@ -1,14 +1,16 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
 
-const CONSTANTS = require('./constants');
-const databaseUtils = require('./databaseUtils');
+const CONSTANTS = require('../constants');
+const databaseUtils = require('../databaseUtils');
 
 const COLLECTIONS = CONSTANTS.DATABASE.COLLECTIONS;
 const URL_CONSTANTS = CONSTANTS.COMPETITION_API.URL;
 
+/*** Private Methods ***/
+
 async function fetchWithAuthHeader(url) {
-  const response = await fetch(url, { headers: { 'X-Auth-Token': CONSTANTS.API_CONSTANTS.API_KEY } });
+  const response = await fetch(url, { headers: { 'X-Auth-Token': CONSTANTS.COMPETITION_API.API_KEY } });
   const responseData = await response.json();
 
   return responseData;
@@ -36,6 +38,8 @@ async function cacheTeams(data) {
   await teamCollection.remove();
   await teamCollection.insert(teams);
 }
+
+/*** Public Methods ***/
 
 async function getFixtures() {
 
@@ -74,6 +78,8 @@ async function getTeams() {
       await cacheTeams(teamsWithEliminatedStatus);
       teams.push(...teamsWithEliminatedStatus);
   }
+
+  return teams;
 }
 
 module.exports = {

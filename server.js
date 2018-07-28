@@ -9,7 +9,8 @@ server.set('port', (process.env.PORT || 5000));
 server.use(boolParser());
 server.use(express.static(path.join(__dirname, 'build')));
 
-server.use('/participants', require('./services/controllers/participants'));
+server.use('/competition', require('./services/controllers/competition'));
+server.use('/players', require('./services/controllers/players'));
 
 server.get('/ping', (request, response) => {
   response.send('pong');

@@ -5,7 +5,8 @@ const competitionService = require('../services/competitionService');
 const router = express.Router();
 
 router.get('/teams', async (request, response) => {
-  const teams = await competitionService.getTeamsWithOutcomeData();
+  const isLiveRequest = request.query.live;
+  const teams = await competitionService.getTeamsWithOutcomeData(isLiveRequest);
 
   response.json(teams);
 });

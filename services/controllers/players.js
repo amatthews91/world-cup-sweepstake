@@ -5,7 +5,8 @@ const playerService = require('../services/playerService');
 const router = express.Router();
 
 router.get('/', async (request, response) => {
-  const players = await playerService.getPlayersWithPoints();
+  const isLiveRequest = request.query.live;
+  const players = await playerService.getPlayersWithPoints(isLiveRequest);
 
   response.json(players);
 });

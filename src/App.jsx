@@ -38,10 +38,10 @@ class App extends Component {
     const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
 
-    const competitionResponse = await fetch(`/api/competition?live=${isLiveData}`);
+    const competitionResponse = await fetch(`/api/competition/teams?live=${isLiveData}`);
     const competitionJson = await competitionResponse.json();
 
-    const fixtureResponse = await fetch('/api/competition/today');
+    const fixtureResponse = await fetch('/api/competition/fixtures/today');
     const fixtureJson = await fixtureResponse.json();
 
     const competitionArray = Object.keys(competitionJson)

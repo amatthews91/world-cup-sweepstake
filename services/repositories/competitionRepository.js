@@ -34,9 +34,9 @@ async function cacheFixtures(data) {
 };
 
 async function cacheTeams(data) {
-  const teamCollection = await databaseUtils.getCollection('teams');
+  const teamCollection = await databaseUtils.getCollection(COLLECTIONS.TEAMS);
   await teamCollection.remove();
-  await teamCollection.insert(teams);
+  await teamCollection.insert(data);
 }
 
 /*** Public Methods ***/

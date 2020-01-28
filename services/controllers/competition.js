@@ -4,17 +4,23 @@ const competitionService = require('../services/competitionService');
 
 const router = express.Router();
 
-router.get('/teams', async (request, response) => {
+router.get('/teams', async (request, response, next) => {
   const isLiveRequest = request.query.live;
-  const teams = await competitionService.getTeamsWithOutcomeData(isLiveRequest);
-
-  response.json(teams);
+  try {
+    const teams = await competitionService.getTeamsWithOutcomeData(isLiveRequest);
+    response.json(teams);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.get('/fixtures/today', async (request, response) => {
-  const fixtures = await competitionService.getFixturesForToday();
-
-  response.json(fixtures);
+router.get('/fixtures/today', async (request, response, next) => {
+  try {
+    const fixtures = await competitionService.getFixturesForToday();
+    response.json(fixtures);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

@@ -12,7 +12,7 @@ const URL_CONSTANTS = CONSTANTS.COMPETITION_API.URL;
 async function fetchWithAuthHeader(url) {
   const response = await fetch(url, { headers: { 'X-Auth-Token': CONSTANTS.COMPETITION_API.API_KEY } });
   const responseData = await response.json();
-
+  
   return responseData;
 };
 
@@ -48,7 +48,7 @@ async function getFixtures() {
 
   if (!durationSinceLastLookup || parseInt(durationSinceLastLookup.asMinutes()) > 1) {
       console.log('1 Minute has passed since last API lookup, updating fixtures.');
-
+            
       const fixtureResponse = await fetchWithAuthHeader(URL_CONSTANTS.BASE + URL_CONSTANTS.FIXTURES);
       const fixtures = fixtureResponse.fixtures;
       await cacheFixtures(fixtures);

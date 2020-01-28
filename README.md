@@ -2,8 +2,12 @@ Application to track the results of Scott Logic Newcastle's 2018 World Cup Sweep
 
 ## Table of Contents
 
-- [What is this?](#What-is-this?)
-- [Technical Specifications](#Technical-Specifications)
+- [Table of Contents](#table-of-contents)
+- [What is this?](#what-is-this)
+- [Technical Specifications](#technical-specifications)
+- [Running Locally](#running-locally)
+  - [Setting up the code](#setting-up-the-code)
+  - [Configuring the database](#configuring-the-database)
 
 ## What is this?
 
@@ -15,7 +19,7 @@ During the competition points are rewarded as follows:
  * 3 Points for every win achieved by an "outcome" team.
  * 1 Point for every draw achieved by an "outcome" team.
 
-At the end of the competition the player with the most points will claim the top prize. In the even of a tie, it will come down to whichever player
+At the end of the competition the player with the most points will claim the top prize. In the even of a tie, it will come down to whichever player guessed closest to the correct number of goals (under or over).
 
 During the competition this application will display the teams picked by each player, along with the total goals they predicted and their current points tally. It will also display the total goals, wins and draws for each team along with the actual current total goals.
 
@@ -25,4 +29,20 @@ The app is fairly barebones as it was thrown together quite quickly to be ready 
 
 The UI is a standard React (no Redux or other addons/middleware) served by an express server which also hosts the services to fetch player data.
 
-The data is served by: http://api.football-data.org/ Which should be updated during the competition, examples of how the data is formatted can be seen in the historical competitions stored here.
+The data is served by: http://api.football-data.org/ which will be updated during the competition.
+
+## Running Locally
+### Setting up the code
+1. Clone this repository.
+2. Run `npm install` in the root.
+3. Create a file name `api-key.txt` in the root, this will contain the API key from football data.
+
+### Configuring the database
+The database is driven by MongoDB and the structure is as follows:
+
+| Collection      | Usage                                                                    |
+|-----------------|-------------------------------------------------------------------------:|
+| fixtures        | Data of all fixtures past and present for the tournament                 |
+| last-api-lookup | The last time fixture data was pulled from the API in ISO 8601           |
+| players         | Data of all the players in the sweepstake.                               |
+| teams           | Data of all the teams in the tournament and whether they are eliminated. |

@@ -12,7 +12,7 @@ const URL_CONSTANTS = CONSTANTS.COMPETITION_API.URL;
 async function fetchWithAuthHeader(url) {
   const response = await fetch(url, { headers: { 'X-Auth-Token': CONSTANTS.COMPETITION_API.API_KEY } });
   const responseData = await response.json();
-  
+
   return responseData;
 };
 
@@ -25,18 +25,18 @@ async function getLastApiLookupTime() {
 
 async function cacheFixtures(data) {
   const fixtureCollection = await databaseUtils.getCollection(COLLECTIONS.FIXTURES);
-  await fixtureCollection.remove();
-  await fixtureCollection.insert(data);
+  await fixtureCollection.deleteMany({});
+  await fixtureCollection.insertMany(data);
 
   const lookupCollection = await databaseUtils.getCollection(COLLECTIONS.LAST_API_LOOKUP);
-  await lookupCollection.remove();
-  await lookupCollection.insert({ time: moment().format() });
+  await lookupCollection.deleteMany({});
+  await lookupCollection.insertOne({ time: moment().format() });
 };
 
 async function cacheTeams(data) {
   const teamCollection = await databaseUtils.getCollection(COLLECTIONS.TEAMS);
-  await teamCollection.remove();
-  await teamCollection.insert(data);
+  await teamCollection.deleteMany({});
+  await teamCollection.insertMany(data);
 }
 
 /*** Public Methods ***/

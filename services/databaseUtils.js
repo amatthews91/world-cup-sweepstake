@@ -6,7 +6,10 @@ async function getCollection(collectionName) {
   try {
       console.log(`Fetching collection: ${collectionName}`);
 
-      const database = await MongoClient.connect(DB_CONSTANTS.URL);
+      const database = await MongoClient.connect(
+        DB_CONSTANTS.URL,
+        { useUnifiedTopology: true }
+      );
       const collection = database.db(DB_CONSTANTS.NAME).collection(collectionName);
 
       return collection;

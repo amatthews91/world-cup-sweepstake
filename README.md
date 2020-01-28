@@ -8,6 +8,8 @@ Application to track the results of Scott Logic Newcastle's 2018 World Cup Sweep
 - [Running Locally](#running-locally)
   - [Setting up the code](#setting-up-the-code)
   - [Configuring the database](#configuring-the-database)
+    - [Players](#players)
+    - [Last API Lookup](#last-api-lookup)
 
 ## What is this?
 
@@ -46,3 +48,22 @@ The database is driven by MongoDB and the structure is as follows:
 | last-api-lookup | The last time fixture data was pulled from the API in ISO 8601           |
 | players         | Data of all the players in the sweepstake.                               |
 | teams           | Data of all the teams in the tournament and whether they are eliminated. |
+
+#### Players
+The `players` table is in the format:
+
+```
+{
+  teams: {
+    name: "Player name",
+    goalsPredicted: 60,
+    goals: [country1, country2],
+    outcomes: [country3, country4, country5]
+  }
+}
+```
+
+#### Last API Lookup
+The `last-api-lookup` collection is a single entry in the form:
+
+`{ time: "2014-09-08T08:02:17-05:00" }`

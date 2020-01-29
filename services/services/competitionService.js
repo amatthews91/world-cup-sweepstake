@@ -28,11 +28,12 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
   fixtures
     .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
     .forEach(fixture => {
-      // TODO: The extraTime and penalties objects are always present but the goals will be null if none were scored.
-      const homeGoals = fixture.score.extraTime ? fixture.score.extraTime.homeTeam : fixture.score.homeTeam;
-      const awayGoals = fixture.score.extraTime ? fixture.score.extraTime.awayTeam : fixture.score.awayTeam;
+      const homeGoals = fixture.score.extraTime.homeTeam ? fixture.score.extraTime.homeTeam : fixture.score.fullTime.homeTeam;
+      const awayGoals = fixture.score.extraTime.awayTeam ? fixture.score.extraTime.awayTeam : fixture.score.fullTime.awayTeam;
       teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
       teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
+
+      teamsWithOutcomeData[fixture.homeTeam.name];
 
       if (homeGoals > awayGoals) {
         teamsWithOutcomeData[fixture.homeTeam.name].wins++;

@@ -28,31 +28,32 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
   fixtures
     .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
     .forEach(fixture => {
-      const homeGoals = fixture.result.extraTime ?  fixture.result.extraTime.goalsHomeTeam : fixture.result.goalsHomeTeam;
-      const awayGoals = fixture.result.extraTime ?  fixture.result.extraTime.goalsAwayTeam : fixture.result.goalsAwayTeam;
-      teamsWithOutcomeData[fixture.homeTeamName].goals += homeGoals;
-      teamsWithOutcomeData[fixture.awayTeamName].goals += awayGoals;
+      // TODO: The extraTime and penalties objects are always present but the goals will be null if none were scored.
+      const homeGoals = fixture.score.extraTime ? fixture.score.extraTime.homeTeam : fixture.score.homeTeam;
+      const awayGoals = fixture.score.extraTime ? fixture.score.extraTime.awayTeam : fixture.score.awayTeam;
+      teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
+      teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
 
       if (homeGoals > awayGoals) {
-        teamsWithOutcomeData[fixture.homeTeamName].wins++;
-        teamsWithOutcomeData[fixture.awayTeamName].losses++;
+        teamsWithOutcomeData[fixture.homeTeam.name].wins++;
+        teamsWithOutcomeData[fixture.awayTeam.name].losses++;
       } else if (awayGoals > homeGoals) {
-        teamsWithOutcomeData[fixture.awayTeamName].wins++;
-        teamsWithOutcomeData[fixture.homeTeamName].losses++;
-      } else if (fixture.result.penaltyShootout) {
-        const homePenaltyGoals = fixture.result.penaltyShootout.goalsHomeTeam;
-        const awayPenaltyGoals = fixture.result.penaltyShootout.goalsAwayTeam;
+        teamsWithOutcomeData[fixture.awayTeam.name].wins++;
+        teamsWithOutcomeData[fixture.homeTeam.name].losses++;
+      } else if (fixture.score.penaltyShootout) {
+        const homePenaltyGoals = fixture.score.penalties.homeTeam;
+        const awayPenaltyGoals = fixture.score.penalties.awayTeam;
 
         if (homePenaltyGoals > awayPenaltyGoals) {
-          teamsWithOutcomeData[fixture.homeTeamName].wins++;
-          teamsWithOutcomeData[fixture.awayTeamName].losses++;
+          teamsWithOutcomeData[fixture.homeTeam.name].wins++;
+          teamsWithOutcomeData[fixture.awayTeam.name].losses++;
         } else {
-          teamsWithOutcomeData[fixture.awayTeamName].wins++;
-          teamsWithOutcomeData[fixture.homeTeamName].losses++;
+          teamsWithOutcomeData[fixture.awayTeam.name].wins++;
+          teamsWithOutcomeData[fixture.homeTeam.name].losses++;
         }
       } else {
-        teamsWithOutcomeData[fixture.homeTeamName].draws++;
-        teamsWithOutcomeData[fixture.awayTeamName].draws++;
+        teamsWithOutcomeData[fixture.homeTeam.name].draws++;
+        teamsWithOutcomeData[fixture.awayTeam.name].draws++;
       }
     });
 
@@ -61,7 +62,7 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
 
 async function getFixturesForToday() {
   const fixtures = await competitionRepository.getFixtures();
-  return fixtures.filter(fixture => moment(fixture.date).isSame(moment(), 'day'));
+  return fixtures.filter(fixture => moment(fixture.utcDate).isSame(moment(), 'day'));
 };
 
 module.exports = {

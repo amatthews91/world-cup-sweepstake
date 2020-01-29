@@ -3,8 +3,8 @@ const fs = require('fs');
 const COMPETITION_API = {
   'API_KEY': process.env.API_KEY || fs.readFileSync('./api-key.txt'),
   'URL': {
-    'BASE': 'https://api.football-data.org/v1/competitions/467/',
-    'FIXTURES': 'fixtures',
+    'BASE': 'https://api.football-data.org/v2/competitions/CL/',
+    'FIXTURES': 'matches',
     'TEAMS': 'teams'
   }
 };

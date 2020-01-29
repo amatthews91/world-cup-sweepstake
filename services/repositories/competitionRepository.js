@@ -50,7 +50,8 @@ async function getFixtures() {
       console.log('1 Minute has passed since last API lookup, updating fixtures.');
             
       const fixtureResponse = await fetchWithAuthHeader(URL_CONSTANTS.BASE + URL_CONSTANTS.FIXTURES);
-      const fixtures = fixtureResponse.fixtures;
+      const fixtures = fixtureResponse.matches;
+
       await cacheFixtures(fixtures);
 
       return fixtures;

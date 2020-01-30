@@ -30,18 +30,17 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
     .forEach(fixture => {
       const homeGoals = fixture.score.extraTime.homeTeam ? fixture.score.extraTime.homeTeam : fixture.score.fullTime.homeTeam;
       const awayGoals = fixture.score.extraTime.awayTeam ? fixture.score.extraTime.awayTeam : fixture.score.fullTime.awayTeam;
+
       teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
       teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
-
-      teamsWithOutcomeData[fixture.homeTeam.name];
-
+      
       if (homeGoals > awayGoals) {
         teamsWithOutcomeData[fixture.homeTeam.name].wins++;
         teamsWithOutcomeData[fixture.awayTeam.name].losses++;
       } else if (awayGoals > homeGoals) {
         teamsWithOutcomeData[fixture.awayTeam.name].wins++;
         teamsWithOutcomeData[fixture.homeTeam.name].losses++;
-      } else if (fixture.score.penaltyShootout) {
+      } else if (fixture.score.penalties.homeTeam) {
         const homePenaltyGoals = fixture.score.penalties.homeTeam;
         const awayPenaltyGoals = fixture.score.penalties.awayTeam;
 

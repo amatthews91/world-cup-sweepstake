@@ -57,7 +57,7 @@ async function getFixtures() {
       return fixtures;
   } else {
       console.log('Not enough time since last API call, fetching DB fixtures.');
-      const fixtureCollection = await databaseUtils.getCollection(URL_CONSTANTS.FIXTURES);
+      const fixtureCollection = await databaseUtils.getCollection(COLLECTIONS.FIXTURES);
       const fixtures = await fixtureCollection.find({}).toArray();
       return fixtures;
   }

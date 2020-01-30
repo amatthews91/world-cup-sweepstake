@@ -16,10 +16,6 @@ const App = () => {
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState([]);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = async () => {
     const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
@@ -53,7 +49,7 @@ const App = () => {
     };
   };
 
-  const toggleLiveData = () => isLiveData ? loadData(false) : loadData(true);
+  const toggleLiveData = () => setIsLiveData(!isLiveData);
 
   const reloadData = () => {
     if (!isLoading) {
@@ -61,6 +57,8 @@ const App = () => {
     }
   }
   
+  useEffect(loadData, [isLiveData]);
+
   return (
     <div className="App">
       <header className="App-header">

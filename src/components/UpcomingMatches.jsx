@@ -4,8 +4,7 @@ import moment from 'moment';
 import './UpcomingMatches.css';
 
 const UpcomingMatches = ({
-  matches,
-
+  matches
 }) => {
 
   const getMatchTime = (date) => moment(date).format('HH:mm');  

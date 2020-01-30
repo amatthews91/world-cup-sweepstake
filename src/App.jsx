@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
@@ -7,42 +7,27 @@ import UpcomingMatches from './components/UpcomingMatches';
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
 
-const defaultState = {
-  isLoading: true,
-  isLiveData: false,
-  playerData: [],
-  competitionData: {}
-};
+const App = () => {
 
-class App extends Component {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLiveData, setIsLiveData] = useState(false);
+  const [players, setPlayers] = useState([]);
+  const [competitionData, setCompetitionData] = useState({});
+  const [fixtures, setFixtures] = useState([]);
+  const [teams, setTeams] = useState([]);
 
-  constructor(props) {
-    super(props);
-    this.state = defaultState;
+  useEffect(() => {
+    loadData();
+  }, []);
 
-    this.toggleLiveData = this.toggleLiveData.bind(this);
-    this.reloadData = this.reloadData.bind(this);
-  }
-
-  componentDidMount() {
-    this.loadData(false);
-  }
-
-  async loadData(isLiveData) {
-    this.setState({
-      ...this.state,
-      isLoading: true,
-      isLiveData
-    });
-
+  const loadData = async () => {
     const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
+    setPlayers(playerJson);
 
     const competitionResponse = await fetch(`/api/competition/teams?live=${isLiveData}`);
     const competitionJson = await competitionResponse.json();
-
-    const fixtureResponse = await fetch('/api/competition/fixtures/today');
-    const fixtureJson = await fixtureResponse.json();
+    setTeams(competitionJson);
 
     const competitionArray = Object.keys(competitionJson)
       .map(key => {
@@ -51,17 +36,16 @@ class App extends Component {
           name: key
         };
       });
+    setCompetitionData(competitionArray);
 
-    this.setState({
-      isLoading: false,
-      playerData: playerJson,
-      competitionData: competitionArray,
-      teams: competitionJson,
-      fixtures: fixtureJson
-    });
+    const fixtureResponse = await fetch('/api/competition/fixtures/today');
+    const fixtureJson = await fixtureResponse.json();    
+    setFixtures(fixtureJson);
+
+    setIsLoading(false);
   };
 
-  getPrizePool(players) {
+  const getPrizePool = () => {
     const totalCash = players.length * 3;
     return {
       first: (totalCash * 0.85).toFixed(2),
@@ -69,61 +53,56 @@ class App extends Component {
     };
   };
 
-  toggleLiveData() {
-    this.state.isLiveData ? this.loadData(false) : this.loadData(true);
-  };
+  const toggleLiveData = () => isLiveData ? loadData(false) : loadData(true);
 
-  reloadData() {
-    if (!this.state.isLoading) {
-      this.loadData(this.state.isLiveData);
+  const reloadData = () => {
+    if (!isLoading) {
+      loadData(isLiveData);
     }
   }
-
-  render() {
-    const prizePool = this.getPrizePool(this.state.playerData);
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
-        </header>
-        <div className="data-options">
-          <label className="live-data-checkbox"
-            title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
-            <input
-              type="checkbox"
-              disabled={this.state.isLoading}
-              checked={this.state.isLiveData}
-              onChange={this.toggleLiveData}
-            />
-            Use live data for tables?
-            </label>
-          <div className="refresh-data" onClick={this.reloadData}>
-            <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
-            Refresh data
-            </div>
-        </div>
-        {this.state.isLoading ?
-          <div className="loading">
-            <p>Loading competition data...</p>
-          </div> :
-          <div className="content">
-            <div className="prize-pool">
-              <h2>Current Prize Pool</h2>
-              <p>First: &pound;{prizePool.first} Last: &pound;{prizePool.last}</p>
-            </div>
-            <UpcomingMatches matches={this.state.fixtures} />
-            <div className="tables">
-              <PlayerTable
-                rows={this.state.playerData}
-                teams={this.state.teams}
-              />
-              <CompetitionTable rows={this.state.competitionData} />
-            </div>
+  
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
+      </header>
+      <div className="data-options">
+        <label className="live-data-checkbox"
+          title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
+          <input
+            type="checkbox"
+            disabled={isLoading}
+            checked={isLiveData}
+            onChange={toggleLiveData}
+          />
+          Use live data for tables?
+          </label>
+        <div className="refresh-data" onClick={reloadData}>
+          <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
+          Refresh data
           </div>
-        }
       </div>
-    );
-  }
+      {isLoading ?
+        <div className="loading">
+          <p>Loading competition data...</p>
+        </div> :
+        <div className="content">
+          <div className="prize-pool">
+            <h2>Current Prize Pool</h2>
+            <p>First: &pound;{getPrizePool().first} Last: &pound;{getPrizePool().last}</p>
+          </div>
+          <UpcomingMatches matches={fixtures} />
+          <div className="tables">
+            <PlayerTable
+              rows={players}
+              teams={teams}
+            />
+            <CompetitionTable rows={competitionData} />
+          </div>
+        </div>
+      }
+    </div>
+  );
 }
 
 export default App;

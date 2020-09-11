@@ -23,7 +23,7 @@
     "express-query-boolean": "^2.0.0",
     "moment": "^2.22.2",
     "mongodb": "^3.5.2",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.6.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "^3.3.0"

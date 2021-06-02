@@ -14,7 +14,7 @@ router.get('/teams', async (request, response, next) => {
   }
 });
 
-router.get('/fixtures/today', async (request, response, next) => {
+router.get('/fixtures/today', async (_, response, next) => {
   try {
     const fixtures = await competitionService.getFixturesForToday();
     response.json(fixtures);

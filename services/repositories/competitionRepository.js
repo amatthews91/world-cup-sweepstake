@@ -48,8 +48,8 @@ async function getFixtures() {
 
   if (!durationSinceLastLookup || parseInt(durationSinceLastLookup.asMinutes()) > 1) {
       console.log('1 Minute has passed since last API lookup, updating fixtures.');
-            
-      const fixtureResponse = await fetchWithAuthHeader(URL_CONSTANTS.BASE + URL_CONSTANTS.FIXTURES);
+
+      const fixtureResponse = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.FIXTURES}`);
       const fixtures = fixtureResponse.matches;
 
       await cacheFixtures(fixtures);
@@ -69,7 +69,7 @@ async function getTeams() {
 
   if (teams.length === 0) {
       console.log('No teams found in DB, updating from API');
-      const apiTeams = await fetchWithAuthHeader(URL_CONSTANTS.BASE + URL_CONSTANTS.TEAMS);
+      const apiTeams = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.TEAMS}`);
       const teamsWithEliminatedStatus = apiTeams.teams.map(team => {
           return {
               isEliminated: false,

@@ -3,7 +3,8 @@ const fs = require('fs');
 const COMPETITION_API = {
   'API_KEY': process.env.API_KEY || fs.readFileSync('./api-key.txt'),
   'URL': {
-    'BASE': 'https://api.football-data.org/v2/competitions/CL/',
+    'BASE': 'https://api.football-data.org/v2/competitions',
+    'COMPETITION_CODE': '2018',
     'FIXTURES': 'matches',
     'TEAMS': 'teams'
   }
@@ -17,7 +18,7 @@ const DATABASE = {
     'TEAMS': 'teams'
   },
   'URL': process.env.MONGODB_URI || 'mongodb://localhost:27017/',
-  'NAME': process.env.MONGODB_NAME || 'world-cup-sweepstake'
+  'NAME': process.env.MONGODB_NAME || 'sweepstake'
 };
 
 module.exports = {

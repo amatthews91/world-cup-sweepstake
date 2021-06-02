@@ -35,7 +35,7 @@ const App = () => {
     setCompetitionData(competitionArray);
 
     const fixtureResponse = await fetch('/api/competition/fixtures/today');
-    const fixtureJson = await fixtureResponse.json();    
+    const fixtureJson = await fixtureResponse.json();
     setFixtures(fixtureJson);
 
     setIsLoading(false);
@@ -56,8 +56,8 @@ const App = () => {
       loadData(isLiveData);
     }
   }
-  
-  useEffect(loadData, [isLiveData]);
+
+  useEffect(() => { loadData() }, [isLiveData]);
 
   return (
     <div className="App">

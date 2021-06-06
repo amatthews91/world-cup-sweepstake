@@ -4,18 +4,6 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-firebase-debug.log*
-firebase-debug.*.log*
-
-# Firebase cache
-.firebase/
-
-# Firebase config
-
-# Uncomment this if you'd like others to create their own Firebase project.
-# For a team working on the same Firebase project(s), it is recommended to leave
-# it commented so all members can deploy to the same project(s) in .firebaserc.
-# .firebaserc
 
 # Runtime data
 pids
@@ -41,11 +29,15 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
+# Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
 # Dependency directories
-node_modules
+node_modules/
+jspm_packages/
+
+# TypeScript v1 declaration files
+typings/
 
 # Optional npm cache directory
 .npm
@@ -64,3 +56,12 @@ node_modules
 
 # dotenv environment variables file
 .env
+
+# next.js build output
+.next
+
+# build files
+build/
+
+# api key file
+api-key.txt

@@ -1,7 +1,5 @@
 const moment = require('moment');
 
-const competitionRepository = require('../repositories/competitionRepository');
-
 const defaultOutcomeData = {
   goals: 0,
   wins: 0,
@@ -10,8 +8,8 @@ const defaultOutcomeData = {
 };
 
 async function getTeamsWithOutcomeData(isLiveRequest) {
-  const fixtures = await competitionRepository.getFixtures();
-  const teams = await competitionRepository.getTeams();
+  const fixtures = [];
+  const teams = [];
 
   const teamsWithOutcomeData = {};
 
@@ -33,7 +31,7 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
 
       teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
       teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
-      
+
       if (homeGoals > awayGoals) {
         teamsWithOutcomeData[fixture.homeTeam.name].wins++;
         teamsWithOutcomeData[fixture.awayTeam.name].losses++;
@@ -61,7 +59,7 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
 };
 
 async function getFixturesForToday() {
-  const fixtures = await competitionRepository.getFixtures();
+  const fixtures = [];
   return fixtures.filter(fixture => moment(fixture.utcDate).isSame(moment(), 'day'));
 };
 

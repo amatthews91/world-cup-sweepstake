@@ -1,5 +1,5 @@
-const playerRepository = require('../repositories/playerRepository');
 const competitionService = require('../services/competitionService');
+const playerRepository = require('../repositories/playerRepository');
 
 const getPointsForPlayer = (player, teams) => {
   let points = 0;
@@ -13,7 +13,10 @@ const getPointsForPlayer = (player, teams) => {
   return points;
 };
 
-const getTotalGoals = teams => {
+const getTotalGoals = teams => {1
+  if (Object.keys(teams).length === 0) {
+    return 0;
+  }
   return Object.keys(teams)
     .map(key => teams[key].goals)
     .reduce((tally, next) => tally + next);

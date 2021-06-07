@@ -15,4 +15,4 @@ app.get('/ping', (_, response) => {
   response.send('pong');
 });
 
-exports.widgets = functions.https.onRequest(app);
+exports.api = functions.https.onRequest(app);

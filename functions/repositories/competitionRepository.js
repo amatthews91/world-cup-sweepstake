@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const fetch = require('node-fetch');
 const moment = require('moment');
 
@@ -9,11 +10,15 @@ const db = dbUtils.getDatabase();
 const fixtureRef = db.collection('competition').doc('fixtures');
 const teamRef = db.collection('competition').doc('teams');
 const lastLookupRef = db.collection('competition').doc('lastLookup');
+const apiKey = functions.config().footballapi.key;
 
 /*** Private Methods ***/
 
 async function fetchWithAuthHeader(url) {
-  const response = await fetch(url, { headers: { 'X-Auth-Token': CONSTANTS.COMPETITION_API.API_KEY } });
+  const response = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
+  if (!fixtureResponse.ok) {
+    throw new Error(`Unexpected response fetching fixtures '${response.statusText}'`);
+  }
   const responseData = await response.json();
 
   return responseData;
@@ -29,6 +34,7 @@ async function getLastApiLookupTime() {
 };
 
 async function cacheFixtures(data) {
+  console.log(`data ${JSON.stringify(data)}`);
   await fixtureRef.set({ data });
   await lastLookupRef.set({ 'lookupTime': moment().format() })
 };

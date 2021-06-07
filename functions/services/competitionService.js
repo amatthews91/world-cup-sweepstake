@@ -1,4 +1,5 @@
 const moment = require('moment');
+const competitionRepository = require('../repositories/competitionRepository');
 
 const defaultOutcomeData = {
   goals: 0,
@@ -8,8 +9,8 @@ const defaultOutcomeData = {
 };
 
 async function getTeamsWithOutcomeData(isLiveRequest) {
-  const fixtures = [];
-  const teams = [];
+  const fixtures = await competitionRepository.getFixtures();
+  const teams = await competitionRepository.getTeams();
 
   const teamsWithOutcomeData = {};
 
@@ -59,11 +60,12 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
 };
 
 async function getFixturesForToday() {
-  const fixtures = [];
+  const fixtures = await competitionRepository.getFixtures();
   return fixtures.filter(fixture => moment(fixture.utcDate).isSame(moment(), 'day'));
 };
 
 module.exports = {
+  getFixtures: competitionRepository.getFixtures,
   getFixturesForToday,
   getTeamsWithOutcomeData
 };

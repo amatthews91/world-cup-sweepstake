@@ -10,18 +10,6 @@ const COMPETITION_API = {
   }
 };
 
-const DATABASE = {
-  'COLLECTIONS': {
-    'FIXTURES': 'fixtures',
-    'LAST_API_LOOKUP': 'last-api-lookup',
-    'PLAYERS': 'players',
-    'TEAMS': 'teams'
-  },
-  'URL': process.env.MONGODB_URI || 'mongodb://localhost:27017/',
-  'NAME': process.env.MONGODB_NAME || 'sweepstake'
-};
-
 module.exports = {
-  COMPETITION_API,
-  DATABASE
+  COMPETITION_API
 };

@@ -1,24 +1,16 @@
-const MongoClient = require('mongodb').MongoClient;
+const admin = require('firebase-admin');
 
-const DB_CONSTANTS = require('./constants').DATABASE;
+admin.initializeApp();
 
-async function getCollection(collectionName) {
-  try {
-      console.log(`Fetching collection: ${collectionName}`);
+let db;
 
-      const database = await MongoClient.connect(
-        DB_CONSTANTS.URL,
-        { useUnifiedTopology: true }
-      );
-      const collection = database.db(DB_CONSTANTS.NAME).collection(collectionName);
-
-      return collection;
-  } catch (error) {
-      console.log(`Error connecting to database for collection ${collectionName} : ${error}`);
-      return null;
+function getDatabase() {
+  if (!db) {
+    db = admin.firestore();
   }
+  return db;
 };
 
 module.exports = {
-  getCollection
+  getDatabase
 };

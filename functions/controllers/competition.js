@@ -14,6 +14,15 @@ router.get('/teams', async (request, response, next) => {
   }
 });
 
+router.get('/fixtures', async (_, response, next) => {
+  try {
+    const fixtures = await competitionService.getFixtures();
+    response.json(fixtures);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/fixtures/today', async (_, response, next) => {
   try {
     const fixtures = await competitionService.getFixturesForToday();

@@ -1,8 +1,6 @@
-const admin = require('firebase-admin');
+const dbUtils = require('../databaseUtils');
 
-admin.initializeApp();
-
-const db = admin.firestore();
+const db = dbUtils.getDatabase();
 const playerRef = db.collection('players');
 
 async function getPlayers() {

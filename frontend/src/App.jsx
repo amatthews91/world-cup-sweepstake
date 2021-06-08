@@ -62,7 +62,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Scott Logic Newcastle's World Cup 2018 Sweepstake</h1>
+        <h1>Scott Logic Newcastle's World Cup 2020? Sweepstake</h1>
       </header>
       <div className="data-options">
         <label className="live-data-checkbox"

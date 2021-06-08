@@ -74,9 +74,13 @@ async function getTeams() {
       console.log('No teams found in DB, updating from API');
       const apiTeams = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.TEAMS}`);
       const teamsWithEliminatedStatus = apiTeams.teams.map(team => {
+          const { id, crestUrl, name, tla } = team;
           return {
-              isEliminated: false,
-              ...team
+            id,
+            crestUrl,
+            name,
+            tla,
+            isEliminated: false
           }
       });
       await cacheTeams(teamsWithEliminatedStatus);

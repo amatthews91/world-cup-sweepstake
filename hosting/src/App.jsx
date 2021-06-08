@@ -16,7 +16,7 @@ const App = () => {
   const [teams, setTeams] = useState([]);
 
   const loadData = async () => {
-    const playerResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/players}');
+    const playerResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/players');
     const playerJson = await playerResponse.json();
     setPlayers(playerJson);
 

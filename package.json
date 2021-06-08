@@ -1,1 +1,8 @@
-{}
+{
+  "scripts": {
+    "serve": "firebase emulators:start --only firestore,functions,hosting",
+    "deploy": "firebase deploy --only functions,hosting",
+    "deploy:hosting": "cd hosting/ && npm run build && cd ../ && firebase deploy --only hosting",
+    "deploy:functions": "firebase deploy --only functions"
+  }
+}

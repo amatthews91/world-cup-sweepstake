@@ -16,7 +16,7 @@ const apiKey = functions.config().footballapi.key;
 
 async function fetchWithAuthHeader(url) {
   const response = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
-  if (!fixtureResponse.ok) {
+  if (!response.ok) {
     throw new Error(`Unexpected response fetching fixtures '${response.statusText}'`);
   }
   const responseData = await response.json();

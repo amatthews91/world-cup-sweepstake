@@ -10,14 +10,18 @@ const PlayerTable = ({
 }) => {
   const isTeamEliminated = (team) => teams[team].isEliminated;
 
-  const renderTeams = (teams) =>
-    teams.map(team => (
+  const renderTeams = (teams) => {
+    if (!teams || teams.length === 0) {
+      return <span></span>;
+    }
+    return teams.map(team => (
       isTeamEliminated(team) ? <s>{team}</s> : team
     )).reduce((prev, curr) => [prev, ', ', curr]);
+  }
 
-  const areAllPlayerTeamsEliminated = ({ 
-    goals, 
-    outcomes 
+  const areAllPlayerTeamsEliminated = ({
+    goals,
+    outcomes
   }) => goals.every(isTeamEliminated) && outcomes.every(isTeamEliminated);
 
   const renderRow = (row) => {

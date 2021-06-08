@@ -10,18 +10,17 @@ import './App.css';
 const App = () => {
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isLiveData, setIsLiveData] = useState(false);
   const [players, setPlayers] = useState([]);
   const [competitionData, setCompetitionData] = useState({});
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState([]);
 
   const loadData = async () => {
-    const playerResponse = await fetch(`https://us-central1-euro-sweepstake.cloudfunctions.net/api/players?live=${isLiveData}`);
+    const playerResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/players}');
     const playerJson = await playerResponse.json();
     setPlayers(playerJson);
 
-    const competitionResponse = await fetch(`https://us-central1-euro-sweepstake.cloudfunctions.net/api/competition/teams?live=${isLiveData}`);
+    const competitionResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/competition/teams');
     const competitionJson = await competitionResponse.json();
     setTeams(competitionJson);
 
@@ -49,15 +48,13 @@ const App = () => {
     };
   };
 
-  const toggleLiveData = () => setIsLiveData(!isLiveData);
-
   const reloadData = () => {
     if (!isLoading) {
-      loadData(isLiveData);
+      loadData();
     }
   }
 
-  useEffect(() => { loadData() }, [isLiveData]);
+  useEffect(() => { loadData() }, []);
 
   return (
     <div className="App">
@@ -65,19 +62,9 @@ const App = () => {
         <h1>Scott Logic Newcastle's Euro 2020? Sweepstake</h1>
       </header>
       <div className="data-options">
-        <label className="live-data-checkbox"
-          title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
-          <input
-            type="checkbox"
-            disabled={isLoading}
-            checked={isLiveData}
-            onChange={toggleLiveData}
-          />
-          Use live data for tables?
-          </label>
         <div className="refresh-data" onClick={reloadData}>
           <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
-          Refresh data
+            Refresh data
           </div>
       </div>
       {isLoading ?

@@ -7,6 +7,8 @@ import UpcomingMatches from './components/UpcomingMatches';
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
 
+const ENTRY_FEE = 2;
+
 const App = () => {
 
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +43,7 @@ const App = () => {
   };
 
   const getPrizePool = () => {
-    const totalCash = players.length * 3;
+    const totalCash = players.length * ENTRY_FEE;
     return {
       first: (totalCash * 0.85).toFixed(2),
       last: (totalCash * 0.15).toFixed(2)

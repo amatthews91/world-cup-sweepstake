@@ -34,7 +34,6 @@ async function getLastApiLookupTime() {
 };
 
 async function cacheFixtures(data) {
-  console.log(`data ${JSON.stringify(data)}`);
   await fixtureRef.set({ data });
   await lastLookupRef.set({ 'lookupTime': moment().format() })
 };

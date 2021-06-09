@@ -16,11 +16,11 @@ const App = () => {
   const [teams, setTeams] = useState([]);
 
   const loadData = async () => {
-    const playerResponse = await fetch('/api/players');
+    const playerResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/players');
     const playerJson = await playerResponse.json();
     setPlayers(playerJson);
 
-    const competitionResponse = await fetch('/api/competition/teams');
+    const competitionResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/competition/teams');
     const competitionJson = await competitionResponse.json();
     setTeams(competitionJson);
 
@@ -33,7 +33,7 @@ const App = () => {
       });
     setCompetitionData(competitionArray);
 
-    const fixtureResponse = await fetch('/api/competition/fixtures/today');
+    const fixtureResponse = await fetch('https://us-central1-euro-sweepstake.cloudfunctions.net/api/competition/fixtures/today');
     const fixtureJson = await fixtureResponse.json();
     setFixtures(fixtureJson);
 

@@ -7,14 +7,14 @@ Application to track the results of Scott Logic Newcastle's 2018 World Cup Sweep
 - [Technical Specifications](#technical-specifications)
 - [Running Locally](#running-locally)
   - [Setting up the code](#setting-up-the-code)
-  - [Configuring the database](#configuring-the-database)
+  - [Data Storage](#data-storage)
     - [Players](#players)
     - [Last API Lookup](#last-api-lookup)
 
 ## What is this?
 
-This is a sweepstake competition which will run alongside the 2018 FIFA World Cup, but with a twist:
-Players will draw 5 teams from a hat, the first 2 teams will be the "goal" teams, the subsequent 3 teams will be the "outcome" teams. The team names will then be returned to the hat for the next player. They will also be asked to predict the total goals that will be scored over the competition.
+This is a sweepstake competition which will run alongside the 2020 Euros, but with a twist:
+Players will be drawn 5 teams from a hat, the first 2 teams will be the "goal" teams, the subsequent 3 teams will be the "outcome" teams. The team names will then be returned to the hat for the next player. They will also be asked to predict the total goals that will be scored over the competition.
 
 During the competition points are rewarded as follows:
  * 1 Point for every goal scored by a "goal" team.
@@ -37,18 +37,19 @@ The data is served by: http://api.football-data.org/ which will be updated durin
 ### Setting up the code
 1. Clone this repository.
 2. Run `npm install` in the root.
+3. Do firebase things... TODO: Finish the install instructions post-firebase migration.
 
-TODO: Finish the install instructions post-firebase migration.
-
-### Configuring the database
+### Data Storage
 The database is driven by Google Firestore. and the structure is as follows:
 
-.
+```
+|
 +-- competition
 |   +-- fixtures
 |   +-- teams
 |   +-- lastApiLookup
 +-- players
+```
 
 | Collection.document       | Usage                                                                    |
 |---------------------------|-------------------------------------------------------------------------:|
@@ -56,6 +57,7 @@ The database is driven by Google Firestore. and the structure is as follows:
 | competition.teams         | Data of all the teams in the tournament and whether they are eliminated  |
 | competition.lastApiLookup |  The last time fixture data was pulled from the API in ISO 8601          |
 | players                   | Data of all the players in the sweepstake.                               |
+
 
 #### Players
 The `players` documents are in the format:

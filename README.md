@@ -66,8 +66,10 @@ The `players` documents are in the format:
 {
   name: "Player name",
   goalsPredicted: 60,
-  goals: [country1, country2],
-  outcomes: [country3, country4, country5]
+  teams: {
+    goals: [country1, country2],
+    outcomes: [country3, country4, country5]
+  }
 }
 ```
 

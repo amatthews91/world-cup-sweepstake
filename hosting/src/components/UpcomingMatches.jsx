@@ -7,7 +7,8 @@ const UpcomingMatches = ({
   matches
 }) => {
 
-  const getMatchTime = (date) => moment(date).format('HH:mm');  
+  // TODO: Convert UTC to BST.
+  const getMatchTime = (date) => moment(date).format('HH:mm');
 
   const getMatchStatus = (match) => {
     switch (match.status) {
@@ -21,21 +22,22 @@ const UpcomingMatches = ({
   }
 
   const renderRow = (match) => (
-    <div key={`${match.homeTeamName}-${match.awayTeamName}`} className="match-row">
+    <div key={`${match.homeTeam.name}-${match.awayTeam.name}`} className="match-row">
       <div className='match-result'>
-        <div className="match-team match-team-home">{match.homeTeamName}</div>
+        <div className="match-team match-team-home">{match.homeTeam.name}</div>
         { match.status === 'IN_PLAY' || match.status === 'FINISHED' ?
           <div className="match-score">
+            {/* TODO: Handle extra time scores. (Based on match.score.duration field) */}
             <div className="match-goals match-goals-home">
-              {match.result.goalsHomeTeam}
+              {match.score.fullTime.homeTeam}
             </div>
             <div className="match-goals match-goals-away">
-              {match.result.goalsAwayTeam}
+              {match.score.fullTime.awayTeam}
             </div>
           </div> :
-          <div className="match-time">{getMatchTime(match.date)}</div>
+          <div className="match-time">{getMatchTime(match.utcDate)}</div>
         }
-        <div className="match-team match-team-away">{match.awayTeamName}</div>
+        <div className="match-team match-team-away">{match.awayTeam.name}</div>
       </div>
       <div className="match-status">{getMatchStatus(match)}</div>
     </div>

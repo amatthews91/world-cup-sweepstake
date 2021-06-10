@@ -13,7 +13,7 @@ const getPointsForPlayer = (player, teams) => {
   return points;
 };
 
-const getTotalGoals = teams => {1
+const getTotalGoals = teams => {
   if (Object.keys(teams).length === 0) {
     return 0;
   }

@@ -47,7 +47,7 @@ async function cacheTeams(data) {
 async function getFixtures() {
 
   const lastApiLookup = await getLastApiLookupTime();
-  const durationSinceLastLookup = lastApiLookup ? moment.duration(moment().diff(moment(lastApiLookup.time))) : null;
+  const durationSinceLastLookup = lastApiLookup ? moment.duration(moment().diff(moment(lastApiLookup))) : null;
 
   if (!durationSinceLastLookup || parseInt(durationSinceLastLookup.asMinutes()) > 1) {
       console.log('1 Minute has passed since last API lookup, updating fixtures.');

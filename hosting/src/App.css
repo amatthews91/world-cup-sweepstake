@@ -9,14 +9,9 @@
   margin-bottom: 20px;
 }
 
-.content {
-  width: 80%;
-  margin: 0 auto;
-}
-
 .tables {
   display:flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 }
 

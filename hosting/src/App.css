@@ -4,8 +4,7 @@
 
 .App-header {
   background-color: #222;
-  height: 70px;
-  padding: 20px;
+  padding: 5px;
   color: white;
   margin-bottom: 20px;
 }
@@ -33,7 +32,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .data-options {
     width: 100%;
   }
@@ -44,6 +43,10 @@
 
   .upcoming-matches {
     width: 100%;
+  }
+
+  table {
+    font-size: .7em;
   }
 }
 

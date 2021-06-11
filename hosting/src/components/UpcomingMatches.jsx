@@ -7,17 +7,23 @@ const UpcomingMatches = ({
   matches
 }) => {
 
-  // TODO: Convert UTC to BST.
   const getMatchTime = (date) => moment(date).format('HH:mm');
 
-  const getMatchStatus = (match) => {
+  const renderInfo = (match) => {
     switch (match.status) {
       case 'IN_PLAY':
-        return <span className="status-live">Live</span>;
+        return <div className="status-live">Live</div>;
       case 'FINISHED':
-        return <span>FT</span>;
+        return <div className="match-score">
+            <div className="match-goals match-goals-home">
+              {match.score.fullTime.homeTeam}
+            </div>
+            <div className="match-goals match-goals-away">
+              {match.score.fullTime.awayTeam}
+            </div>
+          </div>;
       default:
-        return <span></span>;
+        return <div className="match-time">{getMatchTime(match.utcDate)}</div>
     }
   }
 
@@ -25,21 +31,9 @@ const UpcomingMatches = ({
     <div key={`${match.homeTeam.name}-${match.awayTeam.name}`} className="match-row">
       <div className='match-result'>
         <div className="match-team match-team-home">{match.homeTeam.name}</div>
-        { match.status === 'IN_PLAY' || match.status === 'FINISHED' ?
-          <div className="match-score">
-            {/* TODO: Handle extra time scores. (Based on match.score.duration field) */}
-            <div className="match-goals match-goals-home">
-              {match.score.fullTime.homeTeam}
-            </div>
-            <div className="match-goals match-goals-away">
-              {match.score.fullTime.awayTeam}
-            </div>
-          </div> :
-          <div className="match-time">{getMatchTime(match.utcDate)}</div>
-        }
+        {renderInfo(match)}
         <div className="match-team match-team-away">{match.awayTeam.name}</div>
       </div>
-      <div className="match-status">{getMatchStatus(match)}</div>
     </div>
   );
 

@@ -10,7 +10,7 @@
 
 .match-team {
     background: #dff4f5;
-    padding: 3px;
+    padding: 5px;
 }
 
 .match-row {
@@ -41,7 +41,9 @@
   opacity: 1;
   font-weight: bold;
   color: #33c664;
+  padding: 5px;
 }
+
 @keyframes pulsate {
   0% {
       opacity: 1;

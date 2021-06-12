@@ -6,6 +6,7 @@ import UpcomingMatches from './components/MatchInfo';
 
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
+import { DateTime } from 'luxon';
 
 const ENTRY_FEE = 2;
 
@@ -21,14 +22,14 @@ const App = () => {
     const playerJson = await playerResponse.json();
     setPlayers(playerJson);
 
-    const competitionResponse = await fetch('/api/competition/teams');
-    const competitionJson = await competitionResponse.json();
-    setTeams(competitionJson);
+    const teamResponse = await fetch('/api/competition/teams');
+    const teamJson = await teamResponse.json();
+    setTeams(teamJson);
 
-    const competitionArray = Object.keys(competitionJson)
+    const competitionArray = Object.keys(teamJson)
       .map(key => {
         return {
-          ...competitionJson[key],
+          ...teamJson[key],
           name: key
         };
       });
@@ -36,7 +37,7 @@ const App = () => {
 
     const fixtureResponse = await fetch('/api/competition/fixtures');
     const fixtureJson = await fixtureResponse.json();
-    setFixtures(fixtureJson);
+    setFixtures(fixtureJson.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}) ));
 
     setIsLoading(false);
   };
@@ -51,6 +52,7 @@ const App = () => {
 
   const reloadData = () => {
     if (!isLoading) {
+      setIsLoading(true);
       loadData();
     }
   }

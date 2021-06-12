@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
-import UpcomingMatches from './components/UpcomingMatches';
+import UpcomingMatches from './components/MatchInfo';
 
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
@@ -34,7 +34,7 @@ const App = () => {
       });
     setCompetitionData(competitionArray);
 
-    const fixtureResponse = await fetch('/api/competition/fixtures/today');
+    const fixtureResponse = await fetch('/api/competition/fixtures');
     const fixtureJson = await fixtureResponse.json();
     setFixtures(fixtureJson);
 

@@ -3,6 +3,14 @@
     margin: 0 auto;
 }
 
+.upcoming-matches > h2 {
+  margin-bottom: 5px;
+}
+
+.match-date {
+  margin: 5px;
+}
+
 .match-info {
   display: grid;
   row-gap: 5px;

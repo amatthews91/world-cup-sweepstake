@@ -23,13 +23,4 @@ router.get('/fixtures', async (_, response, next) => {
   }
 });
 
-router.get('/fixtures/today', async (_, response, next) => {
-  try {
-    const fixtures = await competitionService.getFixturesForToday();
-    response.json(fixtures);
-  } catch (error) {
-    next(error);
-  }
-});
-
 module.exports = router;

@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const fetch = require('node-fetch');
-const moment = require('moment');
+const { DateTime, Duration } = require("luxon");
 
 const dbUtils = require('../databaseUtils');
 const CONSTANTS = require('../constants');
@@ -35,7 +35,7 @@ async function getLastApiLookupTime() {
 
 async function cacheFixtures(data) {
   await fixtureRef.set({ data });
-  await lastLookupRef.set({ 'lookupTime': moment().format() })
+  await lastLookupRef.set({ 'lookupTime': DateTime.utc().toISO() })
 };
 
 async function cacheTeams(data) {
@@ -47,9 +47,14 @@ async function cacheTeams(data) {
 async function getFixtures() {
 
   const lastApiLookup = await getLastApiLookupTime();
-  const durationSinceLastLookup = lastApiLookup ? moment.duration(moment().diff(moment(lastApiLookup))) : null;
+  const minutesSinceLastLookup = lastApiLookup ?
+    DateTime.utc()
+      .diff(DateTime.fromISO(lastApiLookup), 'minutes')
+      .toObject()
+      .minutes :
+    null;
 
-  if (!durationSinceLastLookup || parseInt(durationSinceLastLookup.asMinutes()) > 1) {
+  if (!minutesSinceLastLookup || minutesSinceLastLookup > 1) {
       console.log('1 Minute has passed since last API lookup, updating fixtures.');
 
       const fixtureResponse = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.FIXTURES}`);

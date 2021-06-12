@@ -8,7 +8,7 @@ const UpcomingMatches = ({
 }) => {
 
   const [upcomingMatches, setUpcomingMatches] = useState([]);
-  const [today] = useState(DateTime.utc());
+  const [today] = useState(DateTime.utc().startOf('day'));
 
   const areDatesSameDay = (d1, d2) => d1.hasSame(d2, 'day');
   const getMatchTime = (date) => date.toLocaleString(DateTime.TIME_24_SIMPLE);

@@ -9,7 +9,7 @@ const UpcomingMatches = ({
 
   const [upcomingMatches, setUpcomingMatches] = useState([]);
 
-  const isToday = (dt) => dt.hasSame(DateTime.utc(), 'day');
+  const areDatesSameDay = (d1, d2) => d1.hasSame(d2, 'day');
   const getMatchTime = (date) => DateTime.fromISO(date).toLocaleString(DateTime.TIME_24_SIMPLE);
 
   const renderInfo = (match) => {
@@ -42,7 +42,7 @@ const UpcomingMatches = ({
 
   const renderMatchDate = (matchTime) => {
     const dt = DateTime.fromISO(matchTime);
-    if (isToday(dt)) {
+    if (areDatesSameDay(DateTime.utc(), dt)) {
       return <h3 className="match-date">Today</h3>;
     } else {
       return <h3 className="match-date">{DateTime.fromISO(upcomingMatches[0].utcDate).toFormat('dd MMMM')}</h3>;
@@ -50,7 +50,14 @@ const UpcomingMatches = ({
   }
 
   useEffect(() => {
-    setUpcomingMatches(matches.filter(m => isToday(DateTime.fromISO(m.utcDate))));
+    const today = DateTime.utc();
+
+    // Get all matches from today.
+    const allUpcoming = matches.filter(m => DateTime.fromISO(m.utcDate).diff(today, 'days').toObject().days >= 0);
+
+    // Get matches that are on the next match day.
+    const nextMatchDate = DateTime.fromISO(allUpcoming[0].utcDate);
+    setUpcomingMatches(matches.filter(m => areDatesSameDay(nextMatchDate, DateTime.fromISO(m.utcDate))));
   }, [matches])
 
   return (

@@ -11,18 +11,20 @@ import { DateTime } from 'luxon';
 const ENTRY_FEE = 2;
 
 const App = () => {
+
   const [isLoading, setIsLoading] = useState(true);
+  const [isLiveData, setIsLiveData] = useState(false);
   const [players, setPlayers] = useState([]);
   const [competitionData, setCompetitionData] = useState({});
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState([]);
 
-  const loadData = async () => {
-    const playerResponse = await fetch('/api/players');
+  const loadData = async (isLiveData) => {
+    const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
     setPlayers(playerJson);
 
-    const teamResponse = await fetch('/api/competition/teams');
+    const teamResponse = await fetch(`/api/competition/teams?live=${isLiveData}`);
     const teamJson = await teamResponse.json();
     setTeams(teamJson);
 
@@ -57,7 +59,9 @@ const App = () => {
     }
   }
 
-  useEffect(() => { loadData() }, []);
+  const toggleLiveData = () => setIsLiveData(!isLiveData);
+
+  useEffect(() => { loadData(isLiveData) }, [isLiveData]);
 
   return (
     <div className="App">
@@ -65,6 +69,16 @@ const App = () => {
         <h1>Scott Logic Newcastle's Euro 2020? Sweepstake</h1>
       </header>
       <div className="data-options">
+        <label className="live-data-checkbox"
+          title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
+          <input
+            type="checkbox"
+            disabled={isLoading}
+            checked={isLiveData}
+            onChange={toggleLiveData}
+          />
+          Use live data for tables?
+        </label>
         <div className="refresh-data" onClick={reloadData}>
           <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
             Refresh data

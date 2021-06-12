@@ -7,6 +7,13 @@
   margin-bottom: 5px;
 }
 
+.match {
+  margin-bottom: 10px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+
 .match-date {
   margin: 5px;
 }
@@ -19,12 +26,6 @@
 .match-team {
     background: #dff4f5;
     padding: 5px;
-}
-
-.match-row {
-  margin-bottom: 10px;
-  width: 80%;
-  margin: 0 auto;
 }
 
 .match-goals, .match-time {
@@ -43,12 +44,17 @@
   margin-right: 5px;
 }
 
-.status-live {
+.match-status {
+  font-weight: bold;
+  padding: 5px;
+}
+
+.match-status > .live {
   animation: pulsate 2s ease-out;
   animation-iteration-count: infinite;
   opacity: 1;
-  font-weight: bold;
   color: #33c664;
+  font-weight: bold;
   padding: 5px;
 }
 

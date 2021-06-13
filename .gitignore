@@ -69,7 +69,7 @@ node_modules
 .runtimeconfig.json
 
 # api key for service acct
-player-entry/.service-account.json
+.service-account.json
 
 # player list for util
 player-entry/players.csv

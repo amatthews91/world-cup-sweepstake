@@ -16,6 +16,7 @@ const UpcomingMatches = ({
   const renderMatchStatus = (match) => {
     switch (match.status) {
       case 'IN_PLAY':
+      case 'PAUSED':
         return <span className="live">Live</span>;
       case 'FINISHED':
         return <span>FT</span>;

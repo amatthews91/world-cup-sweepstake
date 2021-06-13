@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
-import UpcomingMatches from './components/MatchInfo';
+import MatchInfo from './components/MatchInfo';
 
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
@@ -93,7 +93,7 @@ const App = () => {
             <h2>Current Prize Pool</h2>
             <p>First: &pound;{getPrizePool().first} Last: &pound;{getPrizePool().last}</p>
           </div>
-          <UpcomingMatches matches={fixtures} />
+          <MatchInfo matches={fixtures} />
           <div className="tables">
             <PlayerTable
               rows={players}

@@ -47,7 +47,7 @@ const UpcomingMatches = ({
   );
 
   const renderMatchDate = (dt) => {
-    if (areDatesSameDay(DateTime.utc(), dt)) {
+    if (areDatesSameDay(today, dt)) {
       return <h3 className="match-date">Today</h3>;
     } else {
       return <h3 className="match-date">{upcomingMatches[0].luxonDate.toFormat('dd MMMM')}</h3>;
@@ -64,11 +64,11 @@ const UpcomingMatches = ({
 
   return (
     <div className="upcoming-matches">
-      <h2>Upcoming Matches</h2>
+      <h2>Matches</h2>
       { upcomingMatches.length === 0 ?
         <div>No further matches scheduled</div> :
         <div className="match-info">
-          { renderMatchDate(upcomingMatches[0].utcDate) }
+          { renderMatchDate(upcomingMatches[0].luxonDate) }
           { upcomingMatches.map(match => renderRow(match)) }
         </div>
       }

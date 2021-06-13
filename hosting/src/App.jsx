@@ -15,7 +15,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLiveData, setIsLiveData] = useState(false);
   const [players, setPlayers] = useState([]);
-  const [competitionData, setCompetitionData] = useState({});
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState([]);
 
@@ -28,21 +27,22 @@ const App = () => {
     const teamJson = await teamResponse.json();
     setTeams(teamJson);
 
-    const competitionArray = Object.keys(teamJson)
-      .map(key => {
-        return {
-          ...teamJson[key],
-          name: key
-        };
-      });
-    setCompetitionData(competitionArray);
-
     const fixtureResponse = await fetch('/api/competition/fixtures');
     const fixtureJson = await fixtureResponse.json();
     setFixtures(fixtureJson.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}) ));
 
     setIsLoading(false);
   };
+
+  const getTeamsAsArray = (teams) => {
+    return Object.keys(teams)
+      .map(key => {
+        return {
+          ...teams[key],
+          name: key
+        };
+      });
+  }
 
   const getPrizePool = () => {
     const totalCash = players.length * ENTRY_FEE;
@@ -99,7 +99,7 @@ const App = () => {
               rows={players}
               teams={teams}
             />
-            <CompetitionTable rows={competitionData} />
+            <CompetitionTable rows={getTeamsAsArray(teams)} />
           </div>
         </div>
       }

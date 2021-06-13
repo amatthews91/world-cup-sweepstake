@@ -30,7 +30,6 @@ const UpcomingMatches = ({
         <div className="match-team match-team-home">{match.homeTeam.name}</div>
         { match.status === 'IN_PLAY' || match.status === 'FINISHED' ?
           <div className="match-score">
-            {/* TODO: Support extra time */}
             <div className="match-goals match-goals-home">
               {match.score.fullTime.homeTeam}
             </div>

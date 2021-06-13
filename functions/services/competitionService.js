@@ -26,8 +26,8 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
   fixtures
     .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
     .forEach(fixture => {
-      const homeGoals = fixture.score.extraTime.homeTeam ? fixture.score.extraTime.homeTeam : fixture.score.fullTime.homeTeam;
-      const awayGoals = fixture.score.extraTime.awayTeam ? fixture.score.extraTime.awayTeam : fixture.score.fullTime.awayTeam;
+      const homeGoals = fixture.score.fullTime.homeTeam;
+      const awayGoals = fixture.score.fullTime.awayTeam;
 
       teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
       teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;

@@ -15,10 +15,10 @@ const Table = ({
         </tr>
       </thead>
       <tbody>
-        { rows.map(row => renderRow(row)) }
+        { rows.map((row, i) => renderRow(row, i+1)) }
       </tbody>
     </table>
-  );  
+  );
 }
 
 export default Table;

@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const fetch = require('node-fetch');
-const { DateTime, Duration } = require("luxon");
+const { DateTime } = require("luxon");
 
 const dbUtils = require('../databaseUtils');
 const CONSTANTS = require('../constants');
@@ -10,12 +10,11 @@ const db = dbUtils.getDatabase();
 const fixtureRef = db.collection('competition').doc('fixtures');
 const teamRef = db.collection('competition').doc('teams');
 const lastLookupRef = db.collection('competition').doc('lastLookup');
-const apiKey = functions.config().footballapi.key;
 
 /*** Private Methods ***/
 
 async function fetchWithAuthHeader(url) {
-  const response = await fetch(url, { headers: { 'X-Auth-Token': apiKey } });
+  const response = await fetch(url, { headers: { 'X-Auth-Token': process.env.API_KEY } });
   if (!response.ok) {
     throw new Error(`Unexpected response fetching fixtures '${response.statusText}'`);
   }

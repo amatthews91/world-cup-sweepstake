@@ -3,6 +3,8 @@ const boolParser = require('express-query-boolean');
 const functions = require('firebase-functions');
 const cors = require('cors')({origin: true});
 
+process.env.API_KEY = functions.config().footballapi.key;
+
 const FUNCTION_NAME = 'api';
 const app = express();
 app.use(cors);

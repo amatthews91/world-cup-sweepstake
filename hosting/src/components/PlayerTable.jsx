@@ -2,7 +2,7 @@ import React from 'react';
 
 import Table from './Table';
 
-const headings = ['Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points'];
+const headings = ['#', 'Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points'];
 
 const PlayerTable = ({
   teams,
@@ -24,7 +24,7 @@ const PlayerTable = ({
     outcomes
   }) => goals.every(isTeamEliminated) && outcomes.every(isTeamEliminated);
 
-  const renderRow = (row) => {
+  const renderRow = (row, rank) => {
     const className = areAllPlayerTeamsEliminated(row.teams) ? 'team-eliminated' : ''
 
     return (
@@ -32,6 +32,7 @@ const PlayerTable = ({
         key={row.name}
         className={className}
       >
+        <td>{rank}</td>
         <td>{row.name}</td>
         <td>{renderTeams(row.teams.goals)}</td>
         <td>{renderTeams(row.teams.outcomes)}</td>

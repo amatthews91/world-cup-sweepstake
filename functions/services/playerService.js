@@ -1,4 +1,4 @@
-const competitionService = require('../services/competitionService');
+const competitionService = require('./competitionService');
 const playerRepository = require('../repositories/playerRepository');
 
 const getPointsForPlayer = (player, teams) => {
@@ -22,6 +22,27 @@ const getTotalGoals = teams => {
     .reduce((tally, next) => tally + next);
 };
 
+const comparePlayers = (a, b, totalGoals) => {
+   // Start with simple sort by who has the most points.
+   if (a.points < b.points) return 1;
+   if (a.points > b.points) return -1;
+
+   const aDistanceToTotalGoals = Math.abs(totalGoals - a.goalsPredicted);
+   const bDistanceToTotalGoals = Math.abs(totalGoals - b.goalsPredicted);
+
+   // Sort by which player is closest to the total goals.
+   if (aDistanceToTotalGoals > bDistanceToTotalGoals) return 1;
+   if (aDistanceToTotalGoals < bDistanceToTotalGoals) return -1;
+
+   // If both players are the same distance from the total goals, whoever did not go over.
+   if (a.goalsPredicted !== b.goalsPredicted) {
+     if (a.goalsPredicted > b.goalsPredicted) return 1;
+     if (a.goalsPredicted < b.goalsPredicted) return -1;
+   }
+
+   return 0;
+}
+
 async function getPlayersWithPoints(isLiveRequest) {
   const players = await playerRepository.getPlayers();
   const teams = await competitionService.getTeamsWithOutcomeData(isLiveRequest);
@@ -35,22 +56,12 @@ async function getPlayersWithPoints(isLiveRequest) {
           ...player,
           points
       };
-    }).sort((a, b) => {
-      if (a.points < b.points) return 1;
-      if (a.points > b.points) return -1;
-
-      const aDistanceToTotalGoals = Math.abs(totalGoals - a.goalsPredicted);
-      const bDistanceToTotalGoals = Math.abs(totalGoals - b.goalsPredicted);
-
-      if (aDistanceToTotalGoals > bDistanceToTotalGoals) return 1;
-      if (aDistanceToTotalGoals < bDistanceToTotalGoals) return -1;
-
-      return 0;
-    });
+    }).sort((a, b) => comparePlayers(a, b, totalGoals));
 
   return playersWithPoints;
 };
 
 module.exports = {
-  getPlayersWithPoints
+  getPlayersWithPoints,
+  comparePlayers // exported for testing
 };

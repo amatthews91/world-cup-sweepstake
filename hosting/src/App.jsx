@@ -19,6 +19,8 @@ const App = () => {
   const [teams, setTeams] = useState([]);
 
   const loadData = async (isLiveData) => {
+    setIsLoading(true);
+
     const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
     const playerJson = await playerResponse.json();
     setPlayers(playerJson);
@@ -54,7 +56,6 @@ const App = () => {
 
   const reloadData = () => {
     if (!isLoading) {
-      setIsLoading(true);
       loadData();
     }
   }

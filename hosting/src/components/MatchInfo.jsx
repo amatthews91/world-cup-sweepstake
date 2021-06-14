@@ -25,11 +25,13 @@ const UpcomingMatches = ({
     }
   }
 
+  const displayMatchScore = status => status === 'IN_PLAY' || status === 'FINISHED' || status === 'PAUSED';
+
   const renderRow = (match) => (
     <div key={`${match.homeTeam.name}-${match.awayTeam.name}`} className="match">
       <div className='match-result'>
         <div className="match-team match-team-home">{match.homeTeam.name}</div>
-        { match.status === 'IN_PLAY' || match.status === 'FINISHED' ?
+        { displayMatchScore(match.status) ?
           <div className="match-score">
             <div className="match-goals match-goals-home">
               {match.score.fullTime.homeTeam}

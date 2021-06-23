@@ -13,15 +13,15 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
 
   const teamsWithOutcomeData = {};
 
-  teams.sort((a, b) => {
-    return (a.name < b.name) ? -1 : 1;
-  })
-  .forEach(team => {
-    teamsWithOutcomeData[team.name] = {
-      flag: team.crestUrl,
-      ...defaultOutcomeData
-    }
-  });
+  teams
+    .sort((a, b) => (a.name < b.name) ? -1 : 1)
+    .forEach(({ name, crestUrl, isEliminated }) => {
+      teamsWithOutcomeData[name] = {
+        flag: crestUrl,
+        isEliminated,
+        ...defaultOutcomeData
+      }
+    });
 
   fixtures
     .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')

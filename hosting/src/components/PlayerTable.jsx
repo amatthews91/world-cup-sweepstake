@@ -7,7 +7,7 @@ const headings = [
   { title: 'Name' },
   { title: 'Goal Teams', colspan: 2 },
   { title: 'Outcome Teams', colspan: 3 },
-  { title: 'Predicted Total Goals' },
+  { title: 'Goals Predicted' },
   { title: 'Total Points' }
 ];
 

@@ -14,8 +14,12 @@
   flex-wrap: wrap;
 }
 
+.team-eliminated, .player-eliminated > td {
+  background: lightgray;
+}
+
 .team-highlighted, .team-highlighted > td {
-  background: #eb7c45;
+  background: #eb7c45 !important;
   color: white;
 }
 

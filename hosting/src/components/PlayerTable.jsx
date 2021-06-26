@@ -47,7 +47,7 @@ const PlayerTable = ({
 
   const renderRow = (row, rank) => {
     const classNames = classnames({
-      'team-eliminated': areAllPlayerTeamsEliminated(row.teams)
+      'player-eliminated': areAllPlayerTeamsEliminated(row.teams)
     });
 
     return (

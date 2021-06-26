@@ -93,23 +93,6 @@ const App = () => {
 
       { error && <ErrorWrapper message={error} /> }
 
-      <div className="data-options">
-        <label className="live-data-checkbox"
-          title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
-          <input
-            type="checkbox"
-            disabled={isLoading}
-            checked={isLiveData}
-            onChange={toggleLiveData}
-          />
-          Use live data for tables?
-        </label>
-        <div className="refresh-data" onClick={reloadData}>
-          <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
-            Refresh data
-          </div>
-      </div>
-
       {isLoading &&
         <div className="loading">
           <p>Loading competition data...</p>
@@ -118,22 +101,38 @@ const App = () => {
 
       {!isLoading && !error &&
         <div className="content">
-          <div className="prize-pool">
-            <h2>Current Prize Pool</h2>
-            <p>First: &pound;{getPrizePool().first} Last: &pound;{getPrizePool().last}</p>
+          <div className="data-options">
+            <label className="live-data-checkbox"
+              title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
+              <input
+                type="checkbox"
+                disabled={isLoading}
+                checked={isLiveData}
+                onChange={toggleLiveData}
+              />
+              Use live data for tables?
+            </label>
+            <div className="refresh-data" onClick={reloadData}>
+              <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
+                Refresh data
+            </div>
           </div>
-          <MatchInfo matches={fixtures} />
-          <div className="tables">
-            <PlayerTable
-              rows={players}
-              teams={teams}
-              onHover={onTeamHover}
-            />
-            <CompetitionTable
+          <div className="left">
+            <div className="prize-pool">
+              <h2>Current Prize Pool</h2>
+              <p>First: &pound;{getPrizePool().first} Last: &pound;{getPrizePool().last}</p>
+            </div>
+            <MatchInfo matches={fixtures} />
+              <PlayerTable
+                rows={players}
+                teams={teams}
+                onHover={onTeamHover}
+              />
+          </div>
+          <CompetitionTable
               rows={getTeamsAsArray(teams)}
               onHover={onTeamHover}
-            />
-          </div>
+          />
         </div>
       }
 

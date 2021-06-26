@@ -8,11 +8,11 @@
   color: white;
 }
 
-.tables {
+/* .tables {
   display:flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-}
+} */
 
 .team-eliminated, .player-eliminated > td {
   background: lightgray;
@@ -27,10 +27,10 @@ td {
   cursor: default;
 }
 
-/* Leave this, might use it for the refresh icon */
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.competition-table {
+  position: fixed;
+  right: 10px;
+  top: 75px;
 }
 
 .data-options {
@@ -45,12 +45,30 @@ td {
     cursor: pointer;
 }
 
+.left {
+  width: 75%;
+}
+
+@media (max-width: 1400px) {
+  .left {
+    width: 100%;
+  }
+
+  .content {
+    display: inline;
+  }
+
+  .competition-table {
+    position: relative;
+  }
+}
+
 @media (max-width: 600px) {
   .data-options {
     width: 100%;
   }
 
-  .tables {
+  .content {
     display: inline;
   }
 
@@ -60,6 +78,10 @@ td {
 
   table {
     font-size: .7em;
+  }
+
+  .competition-table {
+    position: relative;
   }
 }
 

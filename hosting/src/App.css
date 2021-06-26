@@ -77,15 +77,14 @@ td {
   }
 
   table {
-    font-size: .7em;
+    font-size: .6em;
+  }
+
+  td {
+    padding: 5px 1px;
   }
 
   .competition-table {
     position: relative;
   }
-}
-
-s {
-  color: red;
-  opacity: 0.5;
 }

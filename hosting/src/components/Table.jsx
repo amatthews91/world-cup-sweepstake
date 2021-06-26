@@ -11,7 +11,11 @@ const Table = ({
     <table>
       <thead>
         <tr>
-          { headings.map(title => <th key={title}>{title}</th>) }
+          { headings.map(
+            ({
+              title,
+              colspan
+            }) => <th key={title} colspan={colspan || 1}>{title}</th>) }
         </tr>
       </thead>
       <tbody>

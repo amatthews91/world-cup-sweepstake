@@ -11,3 +11,7 @@ td {
   padding: 5px;
   background: #dff4f5;
 }
+
+.team-eliminated, .team-eliminated > td {
+  background: lightgray;
+}

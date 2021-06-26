@@ -3,7 +3,13 @@ import React from 'react';
 import Table from './Table';
 import './CompetitionTable.css';
 
-const headings = ['Name', 'Goals', 'Wins', 'Draws', 'Losses'];
+const headings = [
+  { title: 'Name' },
+  { title: 'Goals' },
+  { title: 'Wins' },
+  { title: 'Draws' },
+  { title: 'Losses' }
+];
 
 const CompetitionTable = ({
   rows

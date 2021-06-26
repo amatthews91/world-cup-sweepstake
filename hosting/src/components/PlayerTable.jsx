@@ -2,7 +2,14 @@ import React from 'react';
 
 import Table from './Table';
 
-const headings = ['#', 'Name', 'Goal Teams', 'Outcome Teams', 'Predicted Total Goals', 'Total Points'];
+const headings = [
+  { title: '#' },
+  { title: 'Name' },
+  { title: 'Goal Teams', colspan: 2 },
+  { title: 'Outcome Teams', colspan: 3 },
+  { title: 'Predicted Total Goals' },
+  { title: 'Total Points' }
+];
 
 const PlayerTable = ({
   teams,
@@ -15,8 +22,8 @@ const PlayerTable = ({
       return <span></span>;
     }
     return teams.map(team => (
-      isTeamEliminated(team) ? <s>{team}</s> : team
-    )).reduce((prev, curr) => [prev, ', ', curr]);
+      <td className={isTeamEliminated(team) && 'team-eliminated'}>{team}</td>
+    ));
   }
 
   const areAllPlayerTeamsEliminated = ({
@@ -34,8 +41,8 @@ const PlayerTable = ({
       >
         <td>{rank}</td>
         <td>{row.name}</td>
-        <td>{renderTeams(row.teams.goals)}</td>
-        <td>{renderTeams(row.teams.outcomes)}</td>
+        {renderTeams(row.teams.goals)}
+        {renderTeams(row.teams.outcomes)}
         <td>{row.goalsPredicted}</td>
         <td>{row.points}</td>
       </tr>

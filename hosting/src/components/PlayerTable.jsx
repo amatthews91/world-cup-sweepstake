@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Table from './Table';
 
@@ -13,16 +14,29 @@ const headings = [
 
 const PlayerTable = ({
   teams,
-  rows
+  rows,
+  onHover
 }) => {
   const isTeamEliminated = (team) => teams[team].isEliminated;
 
-  const renderTeams = (teams) => {
-    if (!teams || teams.length === 0) {
+  const teamClassNames = (team, allTeams) => classnames({
+    'team-eliminated': allTeams[team].isEliminated,
+    'team-highlighted': allTeams[team].isHighlighted
+  });
+
+  const renderTeamColumn = (cellTeams, allTeams) => {
+    if (!cellTeams || cellTeams.length === 0) {
       return <span></span>;
     }
-    return teams.map(team => (
-      <td className={isTeamEliminated(team) && 'team-eliminated'}>{team}</td>
+
+    return cellTeams.map(team => (
+      <td
+        className={teamClassNames(team, allTeams)}
+        onMouseEnter={e => onHover(team)}
+        onMouseOut={_ => onHover(undefined)}
+      >
+        {team}
+      </td>
     ));
   }
 
@@ -32,17 +46,19 @@ const PlayerTable = ({
   }) => goals.every(isTeamEliminated) && outcomes.every(isTeamEliminated);
 
   const renderRow = (row, rank) => {
-    const className = areAllPlayerTeamsEliminated(row.teams) ? 'team-eliminated' : ''
+    const classNames = classnames({
+      'team-eliminated': areAllPlayerTeamsEliminated(row.teams)
+    });
 
     return (
       <tr
         key={row.name}
-        className={className}
+        className={classNames}
       >
         <td>{rank}</td>
         <td>{row.name}</td>
-        {renderTeams(row.teams.goals)}
-        {renderTeams(row.teams.outcomes)}
+        {renderTeamColumn(row.teams.goals, teams)}
+        {renderTeamColumn(row.teams.outcomes, teams)}
         <td>{row.goalsPredicted}</td>
         <td>{row.points}</td>
       </tr>

@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import Table from './Table';
 import './CompetitionTable.css';
@@ -12,13 +13,24 @@ const headings = [
 ];
 
 const CompetitionTable = ({
-  rows
+  rows,
+  onHover
 }) => {
 
   const getTotalGoals = (rows) => rows.map(row => row.goals).reduce((tally, next) => tally + next);
 
+  const rowClassnames = row => classnames({
+    'team-eliminated': row.isEliminated,
+    'team-highlighted': row.isHighlighted
+  });
+
   const renderRow = (row) => (
-    <tr key={row.name} className={row.isEliminated ? 'team-eliminated' : ''}>
+    <tr
+      key={row.name}
+      className={rowClassnames(row)}
+      onMouseEnter={e => onHover(row.name)}
+      onMouseOut={_ => onHover(undefined)}
+    >
       <td><img className="flag" alt="Flag" src={row.flag} width="24" height="16" /> {row.name}</td>
       <td>{row.goals}</td>
       <td>{row.wins}</td>

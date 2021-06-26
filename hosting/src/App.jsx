@@ -17,7 +17,7 @@ const App = () => {
   const [isLiveData, setIsLiveData] = useState(false);
   const [players, setPlayers] = useState([]);
   const [fixtures, setFixtures] = useState([]);
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState({});
   const [error, setError] = useState(undefined);
 
   const getData = async (url, setFunc, mapFunc) => {
@@ -75,6 +75,14 @@ const App = () => {
 
   const toggleLiveData = () => setIsLiveData(!isLiveData);
 
+  const onTeamHover = (team) => {
+    const newTeams = { ...teams };
+    Object.keys(newTeams).forEach(t => {
+        newTeams[t].isHighlighted = (t === team);
+    });
+    setTeams(newTeams);
+  }
+
   useEffect(() => { loadData(isLiveData) }, [isLiveData]);
 
   return (
@@ -119,8 +127,12 @@ const App = () => {
             <PlayerTable
               rows={players}
               teams={teams}
+              onHover={onTeamHover}
             />
-            <CompetitionTable rows={getTeamsAsArray(teams)} />
+            <CompetitionTable
+              rows={getTeamsAsArray(teams)}
+              onHover={onTeamHover}
+            />
           </div>
         </div>
       }

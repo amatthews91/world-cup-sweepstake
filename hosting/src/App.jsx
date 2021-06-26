@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { DateTime } from 'luxon';
 
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
 import MatchInfo from './components/MatchInfo';
+import ErrorWrapper from './components/Error';
 
 import RefreshIcon from './images/RefreshIcon.svg';
 import './App.css';
-import { DateTime } from 'luxon';
 
 const ENTRY_FEE = 2;
 
@@ -17,21 +18,33 @@ const App = () => {
   const [players, setPlayers] = useState([]);
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState([]);
+  const [error, setError] = useState(undefined);
+
+  const getData = async (url, setFunc, mapFunc) => {
+    const response = await fetch(url);
+    const json = await response.json();
+
+    if (!response.ok) {
+      throw new Error(json);
+    }
+
+    setFunc(mapFunc ? mapFunc(json) : json);
+  }
 
   const loadData = async (isLiveData) => {
     setIsLoading(true);
 
-    const playerResponse = await fetch(`/api/players?live=${isLiveData}`);
-    const playerJson = await playerResponse.json();
-    setPlayers(playerJson);
-
-    const teamResponse = await fetch(`/api/competition/teams?live=${isLiveData}`);
-    const teamJson = await teamResponse.json();
-    setTeams(teamJson);
-
-    const fixtureResponse = await fetch('/api/competition/fixtures');
-    const fixtureJson = await fixtureResponse.json();
-    setFixtures(fixtureJson.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}) ));
+    try {
+      await getData(`/api/players?live=${isLiveData}`, setPlayers);
+      await getData(`/api/competition/teams?live=${isLiveData}`, setTeams);
+      await getData(
+        '/api/competition/fixtures',
+        setFixtures,
+        fixtures => fixtures.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}))
+      );
+    } catch (err) {
+      setError(err.message);
+    }
 
     setIsLoading(false);
   };
@@ -69,6 +82,9 @@ const App = () => {
       <header className="App-header">
         <h1>Scott Logic Newcastle's Euro 2020? Sweepstake</h1>
       </header>
+
+      { error && <ErrorWrapper message={error} /> }
+
       <div className="data-options">
         <label className="live-data-checkbox"
           title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
@@ -85,10 +101,14 @@ const App = () => {
             Refresh data
           </div>
       </div>
-      {isLoading ?
+
+      {isLoading &&
         <div className="loading">
           <p>Loading competition data...</p>
-        </div> :
+        </div>
+      }
+
+      {!isLoading && !error &&
         <div className="content">
           <div className="prize-pool">
             <h2>Current Prize Pool</h2>
@@ -104,6 +124,7 @@ const App = () => {
           </div>
         </div>
       }
+
     </div>
   );
 }

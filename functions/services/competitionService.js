@@ -29,8 +29,15 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
       const homeGoals = fixture.score.fullTime.homeTeam;
       const awayGoals = fixture.score.fullTime.awayTeam;
 
-      teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
-      teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
+      // Full time score includes penalty shootout.
+      // Shootout goals do not count towards total.
+      if (fixture.score.duration === 'PENALTY_SHOOTOUT') {
+        teamsWithOutcomeData[fixture.homeTeam.name].goals += (homeGoals - fixture.score.penalties.homeTeam);
+        teamsWithOutcomeData[fixture.awayTeam.name].goals += (awayGoals - fixture.score.penalties.awayTeam);
+      } else {
+        teamsWithOutcomeData[fixture.homeTeam.name].goals += homeGoals;
+        teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
+      }
 
       if (homeGoals > awayGoals) {
         teamsWithOutcomeData[fixture.homeTeam.name].wins++;

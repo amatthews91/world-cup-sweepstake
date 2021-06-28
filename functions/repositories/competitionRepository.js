@@ -57,7 +57,14 @@ async function getFixtures() {
       console.log('1 Minute has passed since last API lookup, updating fixtures.');
 
       const fixtureResponse = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.FIXTURES}`);
-      const fixtures = fixtureResponse.matches;
+      const fixtures = fixtureResponse.matches
+        .map(({ utcDate, status, score, homeTeam, awayTeam }) => ({
+          utcDate,
+          status,
+          score, 
+          homeTeam,
+          awayTeam
+        }));
 
       await cacheFixtures(fixtures);
 

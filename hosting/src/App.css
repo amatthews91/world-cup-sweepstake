@@ -14,7 +14,7 @@
   flex-wrap: wrap;
 } */
 
-.team-eliminated, .player-eliminated > td {
+.team-eliminated, .team-eliminated > td, .player-eliminated > td {
   background: lightgray;
 }
 

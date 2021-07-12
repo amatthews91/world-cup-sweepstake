@@ -1,6 +1,4 @@
-const functions = require('firebase-functions');
 const fetch = require('node-fetch');
-const { DateTime } = require("luxon");
 
 const dbUtils = require('../databaseUtils');
 const CONSTANTS = require('../constants');
@@ -9,7 +7,6 @@ const URL_CONSTANTS = CONSTANTS.COMPETITION_API.URL;
 const db = dbUtils.getDatabase();
 const fixtureRef = db.collection('competition').doc('fixtures');
 const teamRef = db.collection('competition').doc('teams');
-const lastLookupRef = db.collection('competition').doc('lastLookup');
 
 /*** Private Methods ***/
 
@@ -23,18 +20,8 @@ async function fetchWithAuthHeader(url) {
   return responseData;
 };
 
-async function getLastApiLookupTime() {
-  const doc = await lastLookupRef.get();
-  if (doc.exists) {
-    return doc.data().lookupTime;
-  } else {
-    return null;
-  }
-};
-
 async function cacheFixtures(data) {
   await fixtureRef.set({ data });
-  await lastLookupRef.set({ 'lookupTime': DateTime.utc().toISO() })
 };
 
 async function cacheTeams(data) {
@@ -44,33 +31,27 @@ async function cacheTeams(data) {
 /*** Public Methods ***/
 
 async function getFixtures() {
+  const fixtureDoc = await fixtureRef.get();
+  const fixtures = fixtureDoc.exists ? [...fixtureDoc.data().data] : [];
 
-  const lastApiLookup = await getLastApiLookupTime();
-  const minutesSinceLastLookup = lastApiLookup ?
-    DateTime.utc()
-      .diff(DateTime.fromISO(lastApiLookup), 'minutes')
-      .toObject()
-      .minutes :
-    null;
-
-  if (!minutesSinceLastLookup || minutesSinceLastLookup > 1) {
-      console.log('1 Minute has passed since last API lookup, updating fixtures.');
+  if (fixtures.length === 0) {
+      console.log(`No fixtures in DB for competition ${URL_CONSTANTS.COMPETITION_CODE}, loading from API.`);
 
       const fixtureResponse = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.FIXTURES}`);
-      const fixtures = fixtureResponse.matches
+      const newFixtures = fixtureResponse.matches
         .map(({ utcDate, status, score, homeTeam, awayTeam }) => ({
           utcDate,
           status,
-          score, 
+          score,
           homeTeam,
           awayTeam
         }));
 
-      await cacheFixtures(fixtures);
+      await cacheFixtures(newFixtures);
 
-      return fixtures;
+      return newFixtures;
   } else {
-      console.log('Not enough time since last API call, fetching DB fixtures.');
+      console.log('Returning fixtures from DB.');
       const fixtureDoc = await fixtureRef.get();
       return fixtureDoc.data().data;
   }

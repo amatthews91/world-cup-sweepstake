@@ -8,12 +8,6 @@
   color: white;
 }
 
-/* .tables {
-  display:flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-} */
-
 .team-eliminated, .team-eliminated > td, .player-eliminated > td {
   background: lightgray;
 }
@@ -27,64 +21,7 @@ td {
   cursor: default;
 }
 
-.competition-table {
-  position: fixed;
-  right: 50px;
-  top: 75px;
-}
-
-.data-options {
-    display: flex;
-    justify-content: space-evenly;
-    width: 30%;
-    margin: 0 auto;
-    padding-top: 20px;
-}
-
-.refresh-data:hover {
-    cursor: pointer;
-}
-
-.left {
-  width: 75%;
-}
-
-@media (max-width: 1450px) {
-  .left {
-    width: 100%;
-  }
-
-  .content {
-    display: inline;
-  }
-
-  .competition-table {
-    position: relative;
-  }
-}
-
-@media (max-width: 600px) {
-  .data-options {
-    width: 100%;
-  }
-
-  .content {
-    display: inline;
-  }
-
-  .upcoming-matches {
-    width: 100%;
-  }
-
-  table {
-    font-size: .6em;
-  }
-
-  td {
-    padding: 5px 1px;
-  }
-
-  .competition-table {
-    position: relative;
-  }
+.content {
+  display: flex;
+  justify-content: space-evenly;
 }

@@ -15,7 +15,7 @@ const Table = ({
             ({
               title,
               colspan
-            }) => <th key={title} colspan={colspan || 1}>{title}</th>) }
+            }) => <th key={title} colSpan={colspan || 1}>{title}</th>) }
         </tr>
       </thead>
       <tbody>

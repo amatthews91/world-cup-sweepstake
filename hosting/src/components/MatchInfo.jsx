@@ -60,8 +60,12 @@ const UpcomingMatches = ({
     // Get all matches from today.
     const allUpcoming = matches.filter(m => m.luxonDate.diff(today, 'days').toObject().days >= 0);
 
-    // Get matches that are on the next match day.
-    setUpcomingMatches(matches.filter(m => areDatesSameDay(allUpcoming[0].luxonDate, m.luxonDate)));
+    if (!allUpcoming || allUpcoming.length === 0) {
+      setUpcomingMatches([]);
+    } else {
+      // Get matches that are on the next match day.
+      setUpcomingMatches(matches.filter(m => areDatesSameDay(allUpcoming[0].luxonDate, m.luxonDate)));
+    }
   }, [matches])
 
   return (

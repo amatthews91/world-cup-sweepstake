@@ -1,8 +1,8 @@
-.App {
+.app {
   text-align: center;
 }
 
-.App-header {
+.app-header {
   background-color: #222;
   padding: 5px;
   color: white;
@@ -21,7 +21,7 @@ td {
   cursor: default;
 }
 
-.content {
+.tables {
   display: flex;
   justify-content: space-evenly;
 }

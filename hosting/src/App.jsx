@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
 import ErrorWrapper from './components/Error';
+import Timeline from './components/Timeline';
 
 import './App.css';
 
@@ -14,7 +15,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [players, setPlayers] = useState([]);
   // eslint-disable-next-line
-  const [_fixtures, setFixtures] = useState([]);
+  const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState({});
   const [error, setError] = useState(undefined);
 
@@ -68,8 +69,8 @@ const App = () => {
   useEffect(() => { loadData() }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="app">
+      <header className="app-header">
         <h1>Sweepstake Points Test Utility</h1>
       </header>
 
@@ -83,15 +84,20 @@ const App = () => {
 
       {!isLoading && !error &&
         <div className="content">
-          <PlayerTable
-            rows={players}
-            teams={teams}
-            onHover={onTeamHover}
+          <Timeline
+            fixtures={fixtures}
           />
-          <CompetitionTable
-              rows={getTeamsAsArray(teams)}
+          <div className="tables">
+            <PlayerTable
+              rows={players}
+              teams={teams}
               onHover={onTeamHover}
-          />
+            />
+            <CompetitionTable
+                rows={getTeamsAsArray(teams)}
+                onHover={onTeamHover}
+            />
+          </div>
         </div>
       }
 

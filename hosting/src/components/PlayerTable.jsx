@@ -29,8 +29,9 @@ const PlayerTable = ({
       return <span></span>;
     }
 
-    return cellTeams.map(team => (
+    return cellTeams.map((team, i) => (
       <td
+        key={i}
         className={teamClassNames(team, allTeams)}
         onMouseEnter={e => onHover(team)}
         onMouseOut={_ => onHover(undefined)}

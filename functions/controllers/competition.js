@@ -10,6 +10,7 @@ router.get('/teams', async (request, response) => {
     const teams = await competitionService.getTeamsWithOutcomeData(isLiveRequest);
     response.json(teams);
   } catch (error) {
+    console.log(error);
     response.status(500).json(error.message).send();
     return;
   }
@@ -20,6 +21,7 @@ router.get('/fixtures', async (_, response) => {
     const fixtures = await competitionService.getFixtures();
     response.json(fixtures);
   } catch (error) {
+    console.log(error);
     response.status(500).json(error.message).send();
     return;
   }

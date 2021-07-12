@@ -5,8 +5,11 @@ const CONSTANTS = require('../constants');
 const URL_CONSTANTS = CONSTANTS.COMPETITION_API.URL;
 
 const db = dbUtils.getDatabase();
-const fixtureRef = db.collection('competition').doc('fixtures');
-const teamRef = db.collection('competition').doc('teams');
+
+// TODO: Move competition code to URL param.
+const competitionDocRef = db.collection('competition').doc(URL_CONSTANTS.COMPETITION_CODE);
+const fixtureCollection = competitionDocRef.collection('fixtures');
+const teamsCollection = competitionDocRef.collection('teams');
 
 /*** Private Methods ***/
 
@@ -20,49 +23,62 @@ async function fetchWithAuthHeader(url) {
   return responseData;
 };
 
-async function cacheFixtures(data) {
-  await fixtureRef.set({ data });
+async function cacheFixtures(name, data) {
+  await competitionDocRef.set({ name });
+
+  const batch = db.batch();
+  data.forEach(fixture => {
+    const docRef = fixtureCollection.doc(`${fixture.id}`);
+    batch.set(docRef, fixture);
+  })
+  await batch.commit();
 };
 
 async function cacheTeams(data) {
-  await teamRef.set({ data });
+  const batch = db.batch();
+  data.forEach(team => {
+    const docRef = teamsCollection.doc(`${team.id}`);
+    batch.set(docRef, team);
+  })
+  await batch.commit();
 }
 
 /*** Public Methods ***/
 
 async function getFixtures() {
-  const fixtureDoc = await fixtureRef.get();
-  const fixtures = fixtureDoc.exists ? [...fixtureDoc.data().data] : [];
+  const fixtureDocs = await fixtureCollection.get();
 
-  if (fixtures.length === 0) {
+  if (fixtureDocs.empty) {
       console.log(`No fixtures in DB for competition ${URL_CONSTANTS.COMPETITION_CODE}, loading from API.`);
 
       const fixtureResponse = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.FIXTURES}`);
       const newFixtures = fixtureResponse.matches
-        .map(({ utcDate, status, score, homeTeam, awayTeam }) => ({
+        .map(({ id, utcDate, status, score, homeTeam, awayTeam }) => ({
+          id,
           utcDate,
           status,
           score,
           homeTeam,
           awayTeam
         }));
+      const { name } = fixtureResponse.competition;
 
-      await cacheFixtures(newFixtures);
+      await cacheFixtures(name, newFixtures);
 
       return newFixtures;
   } else {
       console.log('Returning fixtures from DB.');
-      const fixtureDoc = await fixtureRef.get();
-      return fixtureDoc.data().data;
+      const fixtures = [];
+      fixtureDocs.forEach(doc => fixtures.push(doc.data()));
+      return fixtures;
   }
 };
 
 async function getTeams() {
-  const teamDoc = await teamRef.get();
-  const teams = teamDoc.exists ? [...teamDoc.data().data] : [];
+  const teamDocs = await teamsCollection.get();
 
-  if (teams.length === 0) {
-      console.log('No teams found in DB, updating from API');
+  if (teamDocs.empty) {
+      console.log(`No teams in DB for competition ${URL_CONSTANTS.COMPETITION_CODE}, loading from API.`);
       const apiTeams = await fetchWithAuthHeader(`${URL_CONSTANTS.BASE}/${URL_CONSTANTS.COMPETITION_CODE}/${URL_CONSTANTS.TEAMS}`);
       const teamsWithEliminatedStatus = apiTeams.teams.map(team => {
           const { id, crestUrl, name, tla } = team;
@@ -75,10 +91,13 @@ async function getTeams() {
           }
       });
       await cacheTeams(teamsWithEliminatedStatus);
-      teams.push(...teamsWithEliminatedStatus);
+      return teamsWithEliminatedStatus;
+  } else {
+    console.log('Returning teams from DB.');
+    const teams = [];
+    teamDocs.forEach(doc => teams.push(doc.data()));
+    return teams;
   }
-
-  return teams;
 }
 
 module.exports = {

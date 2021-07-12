@@ -10,6 +10,7 @@ router.get('/', async (request, response) => {
     const players = await playerService.getPlayersWithPoints(isLiveRequest);
     response.json(players);
   } catch (error) {
+    console.log(error);
     response.status(500).json(error.message).send();
     return;
   }

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "serve:services": "firebase emulators:start --only firestore,functions",
+    "dev:services": "firebase emulators:start --only firestore,functions",
     "dev:frontend": "cd hosting/ && npm run start",
     "dev:addplayers": "node ./utils/local/addPlayersToLocalFirestore.js",
     "deploy": "cd hosting/ && npm run build && cd ../ && firebase deploy --only functions,hosting",

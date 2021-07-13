@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 
+import getPlayersWithPoints from './pointsCalculator';
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
 import ErrorWrapper from './components/Error';
@@ -14,12 +15,11 @@ const App = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [players, setPlayers] = useState([]);
-  // eslint-disable-next-line
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState({});
   const [error, setError] = useState(undefined);
 
-  const getData = async (url, setFunc, mapFunc) => {
+  const getData = async (url, mapFunc) => {
     const response = await fetch(url);
     const json = await response.json();
 
@@ -27,20 +27,23 @@ const App = () => {
       throw new Error(json);
     }
 
-    setFunc(mapFunc ? mapFunc(json) : json);
+    return mapFunc ? mapFunc(json) : json;
   }
 
   const loadData = async () => {
     setIsLoading(true);
 
     try {
-      await getData(`${LOCAL_API_BASE}/players`, setPlayers);
-      await getData(`${LOCAL_API_BASE}/competition/teams`, setTeams);
-      await getData(
+      const newPlayers = await getData(`${LOCAL_API_BASE}/players`);
+      const newTeams = await getData(`${LOCAL_API_BASE}/competition/teams`);
+      const newFixtures = await getData(
         `${LOCAL_API_BASE}/api/competition/fixtures`,
-        setFixtures,
         fixtures => fixtures.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}))
       );
+
+      setPlayers(getPlayersWithPoints(newPlayers, newTeams));
+      setTeams(newTeams);
+      setFixtures(newFixtures);
     } catch (err) {
       setError(err.message);
     }

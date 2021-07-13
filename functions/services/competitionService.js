@@ -7,7 +7,7 @@ const defaultOutcomeData = {
   losses: 0
 };
 
-async function getTeamsWithOutcomeData(isLiveRequest) {
+async function getTeamsWithOutcomeData() {
   const fixtures = await competitionRepository.getFixtures();
   const teams = await competitionRepository.getTeams();
 
@@ -24,7 +24,6 @@ async function getTeamsWithOutcomeData(isLiveRequest) {
     });
 
   fixtures
-    .filter(fixture => isLiveRequest ? fixture.status === 'FINISHED' || fixture.status === 'IN_PLAY' : fixture.status === 'FINISHED')
     .forEach(fixture => {
       const homeGoals = fixture.score.fullTime.homeTeam;
       const awayGoals = fixture.score.fullTime.awayTeam;

@@ -4,10 +4,9 @@ const playerService = require('../services/playerService');
 
 const router = express.Router();
 
-router.get('/', async (request, response) => {
-  const isLiveRequest = request.query.live;
+router.get('/', async (_, response) => {
   try {
-    const players = await playerService.getPlayersWithPoints(isLiveRequest);
+    const players = await playerService.getPlayers();
     response.json(players);
   } catch (error) {
     console.log(error);

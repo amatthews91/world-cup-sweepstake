@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import './Timeline.css';
+
 const Timeline = ({
   fixtures
 }) => {
@@ -19,7 +21,14 @@ const Timeline = ({
   }, [fixtures]);
 
   return (
-    <div className="timeline"></div>
+    <div className="timeline">
+      {matchDays.map(matchDay =>
+        <div className="matchday">
+          <div className="bubble"></div>
+          {/* <div className="date">{matchDay.toISODate()}</div> */}
+        </div>
+      )}
+    </div>
   );
 };
 

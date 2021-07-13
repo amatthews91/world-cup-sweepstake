@@ -18,6 +18,7 @@ const App = () => {
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState({});
   const [error, setError] = useState(undefined);
+  const [selectedMatchDay, setSelectedMatchDay] = useState(null);
 
   const getData = async (url, mapFunc) => {
     const response = await fetch(url);
@@ -89,6 +90,7 @@ const App = () => {
         <div className="content">
           <Timeline
             fixtures={fixtures}
+            selectedMatchDay={selectedMatchDay}
           />
           <div className="tables">
             <PlayerTable

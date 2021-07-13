@@ -1,0 +1,25 @@
+.timeline {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  height: 50px;
+}
+
+.matchday {
+  margin: 0 auto;
+}
+
+.matchday > .bubble {
+  background: #eb7c45;
+  margin: 5px;
+  color: white;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+}
+
+.matchday > .bubble:hover {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}

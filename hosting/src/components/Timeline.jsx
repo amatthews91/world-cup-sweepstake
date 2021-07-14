@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import classnames from 'classnames';
 
 import './Timeline.css';
 
 const Timeline = ({
-  fixtures
+  fixtures,
+  selectedMatchDay,
+  onSelectMatchDay
 }) => {
 
   const [matchDays, setMatchDays] = useState([]);
+
+  const isSelectedMatchDay = (matchDay) => matchDay.hasSame(selectedMatchDay, 'day');
 
   // Find all unique matchDays
   useEffect(() => {
@@ -18,14 +23,29 @@ const Timeline = ({
     });
     newMatchDays.sort((d1, d2) => d1 > d2);
     setMatchDays(newMatchDays);
+    onSelectMatchDay(newMatchDays[newMatchDays.length-1]);
   }, [fixtures]);
+
+  const bubbleClassNames = matchDay => classnames({
+    'bubble': true,
+    'selected-match-day': selectedMatchDay ? isSelectedMatchDay(matchDay) : false
+  });
 
   return (
     <div className="timeline">
       {matchDays.map(matchDay =>
-        <div className="matchday">
-          <div className="bubble"></div>
-          {/* <div className="date">{matchDay.toISODate()}</div> */}
+        <div
+          key={matchDay.toISODate()}
+          className="matchday"
+          onClick={() => onSelectMatchDay(matchDay)}
+        >
+          <div className={bubbleClassNames(matchDay)}></div>
+          <div 
+            className="date"
+            hidden={!isSelectedMatchDay(matchDay)}
+          >
+            {matchDay.toISODate()}
+          </div>
         </div>
       )}
     </div>

@@ -70,6 +70,10 @@ const App = () => {
     setTeams(newTeams);
   }
 
+  const onSelectMatchDay = (matchDay) => {
+    setSelectedMatchDay(matchDay);
+  }
+
   useEffect(() => { loadData() }, []);
 
   return (
@@ -91,6 +95,7 @@ const App = () => {
           <Timeline
             fixtures={fixtures}
             selectedMatchDay={selectedMatchDay}
+            onSelectMatchDay={onSelectMatchDay}
           />
           <div className="tables">
             <PlayerTable

@@ -3,6 +3,7 @@
   width: 100%;
   text-align: center;
   height: 50px;
+  padding-top: 5px
 }
 
 .matchday {
@@ -16,10 +17,24 @@
   height: 30px;
   width: 30px;
   border-radius: 15px;
+  margin: 0 auto;
 }
 
 .matchday > .bubble:hover {
   height: 40px;
   width: 40px;
   border-radius: 20px;
+}
+
+.matchday > .bubble.selected-match-day {
+  border: 4px solid #cc622d;
+  border-radius: 17px;
+}
+
+.matchday > .bubble.selected-match-day:hover {
+  border-radius: 22px;
+}
+
+.matchday > .date {
+  padding-top: 2px;
 }

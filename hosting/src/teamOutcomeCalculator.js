@@ -5,7 +5,7 @@ const defaultOutcomeData = {
   losses: 0
 };
 
-const getTeamsWithOutcomeData = (fixtures, teams) => {
+const getTeamsWithOutcomeData = (fixtures, teams, matchDayLimit) => {
   const teamsWithOutcomeData = {};
 
   teams.forEach(team => {
@@ -15,9 +15,8 @@ const getTeamsWithOutcomeData = (fixtures, teams) => {
     };
   });
 
-  console.log(teamsWithOutcomeData);
-
   fixtures
+    .filter(fixture => matchDayLimit ? fixture.luxonDate <= matchDayLimit : fixture)
     .forEach(fixture => {
       const homeGoals = fixture.score.fullTime.homeTeam;
       const awayGoals = fixture.score.fullTime.awayTeam;

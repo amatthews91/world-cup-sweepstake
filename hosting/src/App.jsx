@@ -19,6 +19,7 @@ const App = () => {
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState({});
   const [error, setError] = useState(undefined);
+  const [matchDays, setMatchDays] = useState([]);
   const [selectedMatchDay, setSelectedMatchDay] = useState(null);
 
   const getData = async (url, mapFunc) => {
@@ -43,10 +44,15 @@ const App = () => {
         fixtures => fixtures.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}))
       );
 
-      const teamsWithOutcomes = getTeamsWithOutcomeData(newFixtures, newTeams);
-      setTeams(teamsWithOutcomes);
-      setPlayers(getPlayersWithPoints(newPlayers, teamsWithOutcomes));
+      const teamsWithOutcomeData = getTeamsWithOutcomeData(newFixtures, newTeams);
+
+      setTeams(teamsWithOutcomeData);
+      setPlayers(getPlayersWithPoints(newPlayers, teamsWithOutcomeData));
       setFixtures(newFixtures);
+
+      const uniqueMatchDays = getUniqueMatchDays(newFixtures);
+      setMatchDays(uniqueMatchDays);
+      setSelectedMatchDay(uniqueMatchDays[uniqueMatchDays.length - 1]);
     } catch (err) {
       setError(err.message);
     }
@@ -74,12 +80,22 @@ const App = () => {
 
   const onSelectMatchDay = (matchDay) => {
     setSelectedMatchDay(matchDay);
-  }
+    const teamsWithOutcomeData = getTeamsWithOutcomeData(fixtures, teams, matchDay);
+    setPlayers(getPlayersWithPoints(players, teamsWithOutcomeData));
+  };
+
+  const getUniqueMatchDays = (fixtures) => {
+    const newMatchDays = [];
+    fixtures.forEach(({ luxonDate }) => {
+      if (newMatchDays.findIndex(el => el.hasSame(luxonDate, 'day')) < 0) {
+        newMatchDays.push(luxonDate);
+      }
+    });
+    newMatchDays.sort((d1, d2) => d1 > d2);
+    return newMatchDays;
+  };
 
   useEffect(() => { loadData() }, []);
-  // useEffect(() => {
-  //   setPlayers(getPlayersWithPoints(players, teams,))
-  // }, [selectedMatchDay]);
 
   return (
     <div className="app">
@@ -98,7 +114,7 @@ const App = () => {
       {!isLoading && !error &&
         <div className="content">
           <Timeline
-            fixtures={fixtures}
+            matchDays={matchDays}
             selectedMatchDay={selectedMatchDay}
             onSelectMatchDay={onSelectMatchDay}
           />

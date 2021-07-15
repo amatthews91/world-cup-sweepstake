@@ -24,7 +24,8 @@ const getTeamsWithOutcomeData = (fixtures, teams) => {
 
       // Full time score includes penalty shootout.
       // Shootout goals do not count towards total.
-      if (fixture.score.duration === 'PENALTY_SHOOTOUT') {
+      const duration = fixture.score.duration;
+      if (duration === 'PENALTY_SHOOTOUT') {
         teamsWithOutcomeData[fixture.homeTeam.name].goals += (homeGoals - fixture.score.penalties.homeTeam);
         teamsWithOutcomeData[fixture.awayTeam.name].goals += (awayGoals - fixture.score.penalties.awayTeam);
       } else {
@@ -32,13 +33,19 @@ const getTeamsWithOutcomeData = (fixtures, teams) => {
         teamsWithOutcomeData[fixture.awayTeam.name].goals += awayGoals;
       }
 
-      if (homeGoals > awayGoals) {
-        teamsWithOutcomeData[fixture.homeTeam.name].wins++;
-        teamsWithOutcomeData[fixture.awayTeam.name].losses++;
-      } else if (awayGoals > homeGoals) {
-        teamsWithOutcomeData[fixture.awayTeam.name].wins++;
-        teamsWithOutcomeData[fixture.homeTeam.name].losses++;
-      } else if (fixture.score.penalties.homeTeam) {
+      if (duration === 'REGULAR' || duration === 'EXTRA_TIME') {
+        if (homeGoals > awayGoals) {
+          teamsWithOutcomeData[fixture.homeTeam.name].wins++;
+          teamsWithOutcomeData[fixture.awayTeam.name].losses++;
+        } else if (awayGoals > homeGoals) {
+          teamsWithOutcomeData[fixture.awayTeam.name].wins++;
+          teamsWithOutcomeData[fixture.homeTeam.name].losses++;
+        } else {
+          teamsWithOutcomeData[fixture.homeTeam.name].draws++;
+          teamsWithOutcomeData[fixture.awayTeam.name].draws++;
+        }
+      } else {
+        // Penalties
         const homePenaltyGoals = fixture.score.penalties.homeTeam;
         const awayPenaltyGoals = fixture.score.penalties.awayTeam;
 
@@ -49,9 +56,6 @@ const getTeamsWithOutcomeData = (fixtures, teams) => {
           teamsWithOutcomeData[fixture.awayTeam.name].wins++;
           teamsWithOutcomeData[fixture.homeTeam.name].losses++;
         }
-      } else {
-        teamsWithOutcomeData[fixture.homeTeam.name].draws++;
-        teamsWithOutcomeData[fixture.awayTeam.name].draws++;
       }
     });
 

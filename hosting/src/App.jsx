@@ -12,12 +12,15 @@ import './App.css';
 
 const LOCAL_API_BASE='http://localhost:5001/euro-sweepstake/us-central1/api';
 
+// TODO: Work out if a team has been eliminated!
+
 const App = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [players, setPlayers] = useState([]);
   const [fixtures, setFixtures] = useState([]);
   const [teams, setTeams] = useState({});
+  const [teamsWithOutcomeData, setTeamsWithOutcomeData] = useState({});
   const [error, setError] = useState(undefined);
   const [matchDays, setMatchDays] = useState([]);
   const [selectedMatchDay, setSelectedMatchDay] = useState(null);
@@ -47,12 +50,13 @@ const App = () => {
       const teamsWithOutcomeData = getTeamsWithOutcomeData(newFixtures, newTeams);
 
       setTeams(teamsWithOutcomeData);
+      setTeamsWithOutcomeData(teamsWithOutcomeData);
       setPlayers(getPlayersWithPoints(newPlayers, teamsWithOutcomeData));
       setFixtures(newFixtures);
 
       const uniqueMatchDays = getUniqueMatchDays(newFixtures);
       setMatchDays(uniqueMatchDays);
-      setSelectedMatchDay(uniqueMatchDays[uniqueMatchDays.length - 1]);
+      setSelectedMatchDay(uniqueMatchDays[uniqueMatchDays.length - 1].endOf('day'));
     } catch (err) {
       setError(err.message);
     }
@@ -79,9 +83,12 @@ const App = () => {
   }
 
   const onSelectMatchDay = (matchDay) => {
-    setSelectedMatchDay(matchDay);
-    const teamsWithOutcomeData = getTeamsWithOutcomeData(fixtures, teams, matchDay);
-    setPlayers(getPlayersWithPoints(players, teamsWithOutcomeData));
+    const endOfMatchDay = matchDay.endOf('day');
+    const filteredTeamsWithOutcomeData = getTeamsWithOutcomeData(fixtures, getTeamsAsArray(teams), endOfMatchDay);
+
+    setSelectedMatchDay(endOfMatchDay);
+    setTeamsWithOutcomeData(filteredTeamsWithOutcomeData);
+    setPlayers(getPlayersWithPoints(players, filteredTeamsWithOutcomeData));
   };
 
   const getUniqueMatchDays = (fixtures) => {
@@ -125,7 +132,7 @@ const App = () => {
               onHover={onTeamHover}
             />
             <CompetitionTable
-                rows={getTeamsAsArray(teams)}
+                rows={getTeamsAsArray(teamsWithOutcomeData)}
                 onHover={onTeamHover}
             />
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
 
 import getPlayersWithPoints from './pointsCalculator';
+import getTeamsWithOutcomeData from './teamOutcomeCalculator';
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
 import ErrorWrapper from './components/Error';
@@ -42,8 +43,9 @@ const App = () => {
         fixtures => fixtures.map(f => ({ ...f, luxonDate: DateTime.fromISO(f.utcDate)}))
       );
 
-      setPlayers(getPlayersWithPoints(newPlayers, newTeams));
-      setTeams(newTeams);
+      const teamsWithOutcomes = getTeamsWithOutcomeData(newFixtures, newTeams);
+      setTeams(teamsWithOutcomes);
+      setPlayers(getPlayersWithPoints(newPlayers, teamsWithOutcomes));
       setFixtures(newFixtures);
     } catch (err) {
       setError(err.message);
@@ -75,6 +77,9 @@ const App = () => {
   }
 
   useEffect(() => { loadData() }, []);
+  // useEffect(() => {
+  //   setPlayers(getPlayersWithPoints(players, teams,))
+  // }, [selectedMatchDay]);
 
   return (
     <div className="app">

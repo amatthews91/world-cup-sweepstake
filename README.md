@@ -37,7 +37,11 @@ The data is served by: http://api.football-data.org/ which will be updated durin
 ### Setting up the code
 1. Clone this repository.
 2. Run `npm install` in the root.
-3. Do firebase things... TODO: Finish the install instructions post-firebase migration.
+3. Install the firebase cli with `npm install -g firebase-tools` enabling global use of the firebase command.
+4. Grab your API key from football-data.org. Run `firebase functions:config:set footballapi.key="THE API KEY"`
+5. Run `npm run serve` to run the firebase emulators for hosting, firestore and functions.
+   1. Functions will live reload but hosting will require `npm run build` to be run from `/hosting` to update.
+6. Run `local:addplayers` to add some example players for the application.
 
 ### Data Storage
 The database is driven by Google Firestore. and the structure is as follows:

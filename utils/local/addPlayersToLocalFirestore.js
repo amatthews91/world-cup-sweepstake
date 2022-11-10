@@ -5,7 +5,7 @@ const uuidv4 = require('uuid').v4;
 process.env.FIRESTORE_EMULATOR_HOST="localhost:8080";
 
 admin.initializeApp({
-  projectId: 'euro-sweepstake'
+  projectId: 'world-cup-sweepstake-sl'
 });
 
 const firestore = admin.firestore();

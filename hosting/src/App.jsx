@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
 import PlayerTable from './components/PlayerTable';
 import CompetitionTable from './components/CompetitionTable';
@@ -99,43 +100,53 @@ const App = () => {
         </div>
       }
 
-      {!isLoading && !error &&
-        <div className="content">
-          <div className="data-options">
-            <label className="live-data-checkbox"
-              title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
-              <input
-                type="checkbox"
-                disabled={isLoading}
-                checked={isLiveData}
-                onChange={toggleLiveData}
-              />
-              Use live data for tables?
-            </label>
-            <div className="refresh-data" onClick={reloadData}>
-              <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
-                Refresh data
-            </div>
-          </div>
-          <div className="left">
-            <div className="prize-pool">
-              <h2>Current Prize Pool</h2>
-              <p>First: &pound;{getPrizePool().first} Last: &pound;{getPrizePool().last}</p>
-            </div>
-            <MatchInfo matches={fixtures} />
-              <PlayerTable
-                rows={players}
-                teams={teams}
-                onHover={onTeamHover}
-              />
-          </div>
-          <CompetitionTable
-              rows={getTeamsAsArray(teams)}
-              onHover={onTeamHover}
-          />
-        </div>
-      }
-
+      <BrowserRouter>
+        <Switch>
+          <Route path="/admin">
+            {/* Admin route*/}  
+              <p>sorry nothing</p>
+          </Route>
+          <Route path="/">
+            {/* Main content */}
+            {!isLoading && !error &&
+              <div className="content">
+                <div className="data-options">
+                  <label className="live-data-checkbox"
+                    title="By default only displaying data for finished games, checking this will also use games which are in play to display the tables 'as it stands'">
+                    <input
+                      type="checkbox"
+                      disabled={isLoading}
+                      checked={isLiveData}
+                      onChange={toggleLiveData}
+                    />
+                    Use live data for tables?
+                  </label>
+                  <div className="refresh-data" onClick={reloadData}>
+                    <img className="refresh-icon" alt="Refresh" src={RefreshIcon} width="24" height="16" />
+                      Refresh data
+                  </div>
+                </div>
+                <div className="left">
+                  <div className="prize-pool">
+                    <h2>Current Prize Pool</h2>
+                    <p>First: &pound;{getPrizePool().first} Last: &pound;{getPrizePool().last}</p>
+                  </div>
+                  <MatchInfo matches={fixtures} />
+                    <PlayerTable
+                      rows={players}
+                      teams={teams}
+                      onHover={onTeamHover}
+                    />
+                </div>
+                <CompetitionTable
+                    rows={getTeamsAsArray(teams)}
+                    onHover={onTeamHover}
+                />
+              </div>
+            }
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }

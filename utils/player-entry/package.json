@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase-admin": "^9.9.0",
+    "firebase-admin": "^11.4.1",
     "uuid": "^8.3.2"
   }
 }
